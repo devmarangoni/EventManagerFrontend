@@ -1,8 +1,8 @@
-import { Box, Button, Flex, Heading, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Button, Flex, Heading, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import getAllCustomersController from "@controllers/customer/getAllCustomersController.js";
 import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
-import { CustomerCard } from "@components/customers/components/CustomerCard.jsx";
+import { CustomersTable } from "@components/customers/components/CustomersTable.jsx";
 import { SearchIcon } from "@chakra-ui/icons";
 import { isBlank } from "@common/utils/isBlank.js";
 
@@ -20,6 +20,7 @@ export const Customers = () => {
         const { success, data } = await getAllCustomersController(auth?.token);
         if (success){
           customers = data;
+          console.log(JSON.stringify(customers));
           setFilteredCustomers(customers);
         }
       }catch(error){
@@ -65,10 +66,11 @@ export const Customers = () => {
   return (
     <Flex flexDir="column" gap="1.5rem">
       <Flex
-        w="100%"
+        w={{ base: "95vw", md: "80vw" }}
         flexDir="row"
         justify="space-between"
         align="center"
+        position="fixed"
       >
         <Heading size="lg">Clientes</Heading>
         <InputGroup size="md" w="40%">
@@ -94,22 +96,10 @@ export const Customers = () => {
         </InputGroup>
       </Flex>
 
-      <Flex
-        w="100%"
-        wrap="wrap"
-        gap="1.5rem"
-      >
-        {filteredCustomers ? filteredCustomers.map(customer => (
-          <Box
-            key={customer?.customerId}
-            w="18vw"
-            h="35vh"
-          >
-            <CustomerCard
-              customer={customer}
-            />
-          </Box>
-        )) : null}
+      <Flex w="100%" marginTop={{ base: "2em", md: "4em" }}>
+        <CustomersTable
+          customers={filteredCustomers}
+        />
       </Flex>
     </Flex>
   );

@@ -56,7 +56,7 @@ export const ModalBudget = ({ startDate, addEvent, isOpen, onClose }) => {
     const [schedule, setSchedule] = useState({
         eventDateTime: null,
         events: []
-    })
+    });
 
     const handleScheduleInputChange = (e) => {
         setSchedule({

@@ -9,6 +9,7 @@ import getActiveEventScheduleByCustomerController from "@controllers/schedule/ge
 import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
 import getAllSchedulesController from "@controllers/schedule/getAllSchedulesController.js";
 import { formatToDateTimeLocal } from "@pages/app/utils/dateUtils.js";
+import getNextSchedulesController from "@controllers/schedule/getNextSchedulesController.js";
 import "./Calendar.css";
 
 let startDate = null;
@@ -56,20 +57,42 @@ export const Calendar = () => {
     const classes = ["event-view"];
     const isAdmin = auth?.user?.admin;
     if(isAdmin) classes.push("admin-view-events");
-    if(!isAdmin && ocuppedDay) classes.push("ocupped-day")
+    if(!isAdmin && ocuppedDay) classes.push("ocupped-day");
 
     const event = {
       id: birthdayPerson,
-      content: budget,
+      content: budget || null,
       classNames: classes,
       title: `${birthdayPerson} - ${length}`,
       start: new Date(schedule)
     };
 
-    setEvents([...events, event]);
+    setEvents((prevEvents) => [...prevEvents, event]);
   };
 
+  /* CUSTOMER */
   useEffect(() => {
+    if(auth?.user?.admin) return;
+
+    const handleGetOcuppedDays = async () => {
+      try{
+        const { success, data } = await getNextSchedulesController(customer?.customerId);
+        if(success){
+          data.forEach((dayOcupped, index) => {
+            const ocuppedEvent = {
+              birthdayPerson: `Indisponível${index}`,
+              length: ""
+            };
+            handleAddEvent(ocuppedEvent, dayOcupped, true);
+          });
+        }
+      }catch(error){
+        console.error("Erro ao obter os dias ocupados por agendamentos");
+        console.error(error?.message);
+      }
+    }
+    handleGetOcuppedDays();
+
     const handleGetCustomerActiveEvent = async () => {
       try{
         const { success, data } = await getActiveEventScheduleByCustomerController(customer?.customerId, auth?.token);
@@ -84,6 +107,12 @@ export const Calendar = () => {
         console.error(error?.message);
       }
     };
+    handleGetCustomerActiveEvent();
+  }, [customer, auth.token, auth.user.admin]);
+
+  /* ADMIN */
+  useEffect(() => {
+    if(!auth?.user?.admin) return;
 
     const handleGetAllEvents = async () => {
       try{
@@ -102,13 +131,8 @@ export const Calendar = () => {
       }
     }
 
-    if(auth?.user?.admin){
-      handleGetAllEvents();
-      return;
-    }
-
-    handleGetCustomerActiveEvent();
-  }, [customer, auth.token, auth.user.admin]);
+    handleGetAllEvents();
+  }, [auth.token, auth.user.admin]);
 
   return (
     <>

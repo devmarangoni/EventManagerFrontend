@@ -29,3 +29,8 @@
 .fc-scrollgrid-sync-inner:has(.fc-col-header-cell-cushion){
     background-color: #bc82fe !important;
 }
+
+.fc-daygrid-day-events:has(.ocupped-day){
+    background-color: #f49d9d !important;
+    color: #000000 !important;
+}

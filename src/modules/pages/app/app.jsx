@@ -8,7 +8,7 @@ export const App = ({ funcionalityComponent }) => {
         <Grid templateColumns={{ base: "1fr", lg: "repeat(6, 1fr)" }} bg="gray.50" w="full" minH="100vh">
             <GridItem
                 as="aside"
-                colSpan={{ lg: 2, xl: 1 }}
+                colSpan={{ lg: 1 }}
                 bg="purple.100"
                 p={{ base: "20px", lg: "30px" }}
                 display={{ base: "none", lg: "block" }}
@@ -17,8 +17,8 @@ export const App = ({ funcionalityComponent }) => {
             </GridItem>
             <GridItem
                 as="main"
-                colSpan={{ base: 6, lg: 4, xl: 5 }}
-                p="40px"
+                colSpan={{ base: 6, lg: 5 }}
+                p={{ base: "12px", md: "20px" }}
             >
                 {funcionalityComponent ? 
                     (
@@ -34,7 +34,7 @@ export const App = ({ funcionalityComponent }) => {
                 bottom="0"
                 width="100%"
                 bg="purple.100"
-                p="20px"
+                p="12px"
                 display={{ base: "block", lg: "none" }}
             >
                 <FooterbarMobile/>
