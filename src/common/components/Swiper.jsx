@@ -1,7 +1,7 @@
 import { IconButton, Flex, Circle } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import { ImageCard } from "@pages/home/components/main/components/ImageCard.jsx";
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 import { useState, useEffect } from "react";
 
 export const Swiper = ({ type, elements, showInDesktop }) => {
@@ -84,7 +84,7 @@ export const Swiper = ({ type, elements, showInDesktop }) => {
                         bg: "transparent",
                         borderRadius: "1rem"
                     }}
-                    icon={<ArrowBackIcon />}
+                    icon={<IoIosArrowDropleftCircle fontSize="30px" />}
                 />
                 <Flex
                     justify="center"
@@ -108,7 +108,7 @@ export const Swiper = ({ type, elements, showInDesktop }) => {
                     _hover={{
                         bg: "transparent"
                     }}
-                    icon={<ArrowForwardIcon />}
+                    icon={<IoIosArrowDroprightCircle fontSize="30px" />}
                 />
             </Flex>
             <Flex>

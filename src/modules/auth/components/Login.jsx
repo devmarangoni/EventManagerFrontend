@@ -8,15 +8,13 @@ import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { FormField } from "@common/components/FormField";
-import PropTypes from "prop-types";
-import { DefaultLink } from "@common/components/DefaultLink.jsx";
+//import { DefaultLink } from "@common/components/DefaultLink.jsx";
 import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
 import { useLoading } from "@common/hooks/Loading/useLoading";
 import loginController from "@controllers/auth/loginController.js";
-import getCustomerByUserIdController from "@controllers/customer/getCustomerByUserIdController.js";
 import { isBlank } from "@common/utils/isBlank.js";
 
-export function Login({ isCustomer }){
+export function Login(){
     const navigate = useNavigate();
     const toast = useToast();
     const { login } = useAuth();
@@ -49,13 +47,7 @@ export function Login({ isCustomer }){
             const { success, message, data } = await loginController(email, password);
             if(success){
                 const { token, user } = data;
-
-                let customer = null;
-                if(isCustomer){
-                    customer = await handleGetCustomer(user.userId);
-                }
-
-                login(token, user, customer);
+                login(token, user);
                 navigate("/");
             }
 
@@ -77,15 +69,6 @@ export function Login({ isCustomer }){
         }finally{
             hideLoading();
         }
-    }
-
-    const handleGetCustomer = async (userId) => {
-        const { success, message, data } = await getCustomerByUserIdController(userId);
-        if(success){
-            return data;
-        }
-
-        throw new Error(message);
     }
 
     const handleFormValidation = () => {
@@ -156,14 +139,10 @@ export function Login({ isCustomer }){
                 </Stack>
                 <Button type="submit" onClick={handleFormValidation}>Entrar</Button>
             </form>
-            <DefaultLink
-                direction={isCustomer ? "/cliente/cadastro" : "/cadastro"}
-                content="Não possui uma conta?"
-            />
+            {/* <DefaultLink
+                direction={"/cadastro"}
+                content="Não possui uma conta? Contate um administrador!"
+            /> */}
         </Box>
     )
-}
-
-Login.propTypes = {
-    isCustomer: PropTypes.bool.isRequired
 }

@@ -31,6 +31,7 @@ export const App = ({ funcionalityComponent }) => {
             <Box
                 as="footer"
                 position="fixed"
+                zIndex="9999"
                 bottom="0"
                 width="100%"
                 bg="purple.100"

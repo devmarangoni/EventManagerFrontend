@@ -1,13 +1,7 @@
-import { Flex, Button, Image, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import companyLogo from "@assets/images/companyLogo.png";
 
 export const Header = () => {
-    const navigate = useNavigate();
-
-    const redirectToLogin = (customer) => {
-        navigate(`${customer}/login`);
-    }
 
     return(
         <>
@@ -54,7 +48,7 @@ export const Header = () => {
                         </Text>
                     </Flex>
                 </Flex>  
-                <Flex
+                {/* <Flex
                     justifyContent="center"
                     alignItems="center"
                     gap="5%"
@@ -81,7 +75,7 @@ export const Header = () => {
                     >
                         CLIENTE
                     </Button>
-                </Flex>              
+                </Flex>               */}
             </Flex>
         </>
     );

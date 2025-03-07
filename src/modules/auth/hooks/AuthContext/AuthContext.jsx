@@ -8,7 +8,6 @@ export function AuthProvider({ children }) {
     const authInitialState = {
         token: null,
         isAuthenticated: false,
-        customer: null,
         user: null
     };
 
@@ -25,8 +24,7 @@ export function AuthProvider({ children }) {
                     setAuth({
                         token: credentials.token,
                         user: credentials.user,
-                        isAuthenticated: true,
-                        customer: credentials.customer
+                        isAuthenticated: true
                     });
                     setValidatingToken(false);
                     return;
@@ -39,12 +37,11 @@ export function AuthProvider({ children }) {
         checkToken();
     }, []);
 
-    const login = (token, user, customer = null) => {
+    const login = (token, user) => {
         const updatedAuth = {
             token, 
             user,
-            isAuthenticated: true,
-            customer
+            isAuthenticated: true
         };
 
         setAuth(updatedAuth);

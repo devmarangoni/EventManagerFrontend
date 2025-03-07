@@ -1,14 +1,12 @@
 import { Stack, Button, Heading, useToast, Flex } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import { DefaultLink } from "@common/components/DefaultLink.jsx";
 import { FormField } from "@common/components/FormField.jsx";
 import { useLoading } from "@common/hooks/Loading/useLoading.jsx";
 import registerController from "@controllers/auth/registerController.js";
-import createCustomerController from "@controllers/customer/createCustomerController.js";
 
-export function Register({ isCustomer }) {
+export function Register() {
   const navigate = useNavigate();
   const toast = useToast();
   const { showLoading, hideLoading } = useLoading();
@@ -21,11 +19,12 @@ export function Register({ isCustomer }) {
     username: null,
   });
 
-  const [customerForm, setCustomerForm] = useState({
-    name: null,
-    mobile: null,
-    phone: null,
-  });
+  // const [customerForm, setCustomerForm] = useState({
+  //   name: null,
+  //   mobile: null,
+  //   phone: null,
+  //   email: null
+  // });
 
   const handleUserInputChange = (e) => {
     setUserForm({
@@ -34,28 +33,23 @@ export function Register({ isCustomer }) {
     });
   };
 
-  const handleCustomerInputChange = (e) => {
-    setCustomerForm({
-      ...customerForm,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleCustomerInputChange = (e) => {
+  //   setCustomerForm({
+  //     ...customerForm,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
-  // IMPLEMENTAR UM ESQUEMA PARA REDIRECIONAR APENAS SE CRIAR O USUÁRIO E O CLIENTE CASO ISCUSTOMER = TRUE
-  // IMPLEMENTAR LÓGICA QUE DELETA O USUÁRIO CASO FALHE EM CRIAR O CLIENTE (APÓS JA TER CRIADO USUÁRIO)
   const register = async (e) => {
     try{
       e.preventDefault();
       setCheckInvalidInputs(false);
 
       showLoading();
-      const { success, message, data } = await registerController(userForm);
-      if(success && isCustomer && data){
-        handleCreateCustomer(data);
-      }
+      const { success, message } = await registerController(userForm);
 
       if(success){
-        navigate(isCustomer ? "/cliente/login" : "/login");
+        navigate("/login");
       }
 
       hideLoading();
@@ -77,21 +71,20 @@ export function Register({ isCustomer }) {
     }
   };
 
-  const handleCreateCustomer = async (user) => {
-    try{
-      const { success } = await createCustomerController({
-        ...customerForm,
-        user
-      });
+  // const handleCreateCustomer = async (user) => {
+  //   try{
+  //     const { success } = await createCustomerController({
+  //       ...customerForm
+  //     });
 
-      if(!success){
-        throw new Error("Erro ao cadastrar cliente");
-      }
-    }catch(error){
-      console.error("Erro ao cadastrar cliente");
-      console.error(error?.message);
-    }
-  }
+  //     if(!success){
+  //       throw new Error("Erro ao cadastrar cliente");
+  //     }
+  //   }catch(error){
+  //     console.error("Erro ao cadastrar cliente");
+  //     console.error(error?.message);
+  //   }
+  // }
 
   const handleFormValidation = () => {
     try {
@@ -172,7 +165,7 @@ export function Register({ isCustomer }) {
               size="md"
             />
           </Stack>
-          {isCustomer ? (
+          {/* CUSTOMER OLD DATA (USE TO CREATE NEW CUSTOMER ON CUSTOMER SCREENS) {isCustomer ? (
             <Stack spacing={3} width={{ base: "70%", md: "40%", lg: "40%", xl: "25%" }}>
               <FormField
                 onChange={handleCustomerInputChange}
@@ -204,7 +197,7 @@ export function Register({ isCustomer }) {
                 type="tel"
               />
             </Stack>
-          ) : null}
+          ) : null} */}
         </Flex>
 
         <Button type="submit" onClick={handleFormValidation}>
@@ -212,13 +205,9 @@ export function Register({ isCustomer }) {
         </Button>
       </form>
       <DefaultLink
-        direction={isCustomer ? "/cliente/login" : "/login"}
+        direction={"/login"}
         content="Já possuo uma conta"
       />
     </Flex>
   );
 }
-
-Register.propTypes = {
-  isCustomer: PropTypes.bool.isRequired,
-};

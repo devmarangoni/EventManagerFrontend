@@ -4,17 +4,24 @@ import {
     Flex, 
     Heading, 
     Image,
-    Text,
-    Button
+    Text
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import withoutPhoto from "@images/customerCard/withoutPhoto.png";
 
-export const CustomerCard = ({ customer }) => {
+export const UserInfosCard = ({ customer, user }) => {
     const infos = [
         {
+          label: "Usuário:",
+          value: user?.username
+        },
+        {
+            label: "Tipo:",
+            value: user?.admin ? "administrador" : "cliente"
+        },
+        {
           label: "Email:",
-          value: customer?.email
+          value: user?.email
         },
         {
           label: "Celular:",
@@ -25,10 +32,6 @@ export const CustomerCard = ({ customer }) => {
           value: customer?.phone
         }
     ];
-
-    const handleSeeCustomerEvents = () => {
-        console.log(customer);
-    }
 
     return(
         <Card 
@@ -49,7 +52,7 @@ export const CustomerCard = ({ customer }) => {
                     gap="0.5rem"
                 >
                     <Image
-                        src={ customer?.user?.photo || withoutPhoto }
+                        src={ user?.photo || withoutPhoto }
                         alt="customer photo"
                         borderRadius="100%"
                         w="45%"
@@ -57,14 +60,14 @@ export const CustomerCard = ({ customer }) => {
                         objectFit="contain"
                     />
                     <Heading 
-                        size="md"
+                        size="lg"
                         textAlign="center"
                     >
                         { customer?.name }
                     </Heading>
                     <Flex
                         w="45%"
-                        fontSize={{ base: "small", md: "medium" }}
+                        fontSize="large"
                         flexDir="column"
                         align="start"
                         gap="5px"
@@ -88,12 +91,12 @@ export const CustomerCard = ({ customer }) => {
                         }
                     </Flex>
                 </Flex>
-                <Button onClick={handleSeeCustomerEvents}>Ver eventos</Button>
             </CardBody>
         </Card>
     );
 }
 
-CustomerCard.propTypes = {
-    customer: PropTypes.object
+UserInfosCard.propTypes = {
+    customer: PropTypes.object,
+    user: PropTypes.object
 }

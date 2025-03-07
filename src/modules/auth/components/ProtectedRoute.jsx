@@ -15,7 +15,7 @@ export function ProtectedRoute({ children }) {
 
         if(!auth.isAuthenticated){
             logout();
-            navigate("/home");
+            navigate("/login");
         }
         hideLoading();
     }, [auth.isAuthenticated, validatingToken, navigate, showLoading, hideLoading]);

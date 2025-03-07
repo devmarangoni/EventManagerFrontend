@@ -1,7 +1,6 @@
 import { Box, Flex, HStack, useToast } from "@chakra-ui/react";
-import { WarningIcon, ArrowLeftIcon } from "@chakra-ui/icons";
+import { IoIosPeople, IoIosLogOut, IoIosHome, IoIosCalendar } from "react-icons/io";
 import { NavLink } from "react-router-dom";
-import { HouseIcon, ScheduleIcon } from "@common/icons/icons.jsx";
 import { useLoading } from "@common/hooks/Loading/useLoading";
 import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
 
@@ -47,13 +46,13 @@ export function FooterbarMobile(){
                         justify="center" 
                         align="center"
                         bg="purple.200"
-                        p="16px"
+                        p="12px"
                         borderRadius="12px"
                         _hover={{
                             bg: "purple.300"
                         }}
                     >
-                        <HouseIcon/>
+                        <IoIosHome fontSize="25px"/>
                     </Flex>
                 </NavLink>
             </Box>
@@ -63,13 +62,13 @@ export function FooterbarMobile(){
                         justify="center" 
                         align="center"
                         bg="purple.200"
-                        p="16px"
+                        p="12px"
                         borderRadius="12px"
                         _hover={{
                             bg: "purple.300"
                         }}
                     >
-                        <ScheduleIcon/>
+                        <IoIosCalendar fontSize="25px"/>
                     </Flex>
                 </NavLink>
             </Box>
@@ -81,13 +80,13 @@ export function FooterbarMobile(){
                                 justify="center" 
                                 align="center"
                                 bg="purple.200"
-                                p="16px"
+                                p="12px"
                                 borderRadius="12px"
                                 _hover={{
                                     bg: "purple.300"
                                 }}
                             >
-                                <WarningIcon/>
+                                <IoIosPeople fontSize="25px"/>
                             </Flex>
                         </NavLink>
                     </Box>
@@ -98,13 +97,13 @@ export function FooterbarMobile(){
                     justifySelf="center" 
                     align="center"
                     bg="purple.200"
-                    p="16px"
+                    p="12px"
                     borderRadius="12px"
                     _hover={{
                         bg: "purple.300"
                     }}
                 >
-                    <ArrowLeftIcon/>
+                    <IoIosLogOut fontSize="25px"/>
                 </Flex>
             </Box>
         </HStack>

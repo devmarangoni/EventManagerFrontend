@@ -6,9 +6,10 @@ import {
     InputGroup,
     InputRightElement,
     Button,
-    FormErrorMessage
+    FormErrorMessage,
+    Icon
 } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { useState } from "react";
 
 export function FormField({ name, onChange, size, placeholder, label, type, isRequired, errorMessage, checkIfIsInvalid, value }) {
@@ -47,7 +48,9 @@ export function FormField({ name, onChange, size, placeholder, label, type, isRe
                                 bg="transparent"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
-                                {showPassword ? <ViewIcon/> : <ViewOffIcon/>}
+                                <Icon fontSize="25px" objectFit="contain">
+                                    {showPassword ? <IoIosEye/> : <IoIosEyeOff/>}
+                                </Icon>
                             </Button>
                         </InputRightElement>
                     </InputGroup>

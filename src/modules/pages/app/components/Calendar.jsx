@@ -5,19 +5,18 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useRef, useState } from "react";
 import { ModalBudget } from "@pages/app/components/ModalBudget.jsx";
-import getActiveEventScheduleByCustomerController from "@controllers/schedule/getActiveEventScheduleByCustomerController.js";
 import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
 import getAllSchedulesController from "@controllers/schedule/getAllSchedulesController.js";
 import { formatToDateTimeLocal } from "@pages/app/utils/dateUtils.js";
-import getNextSchedulesController from "@controllers/schedule/getNextSchedulesController.js";
+import getAllCustomersController from "@controllers/customer/getAllCustomersController.js";
 import "./Calendar.css";
 
 let startDate = null;
 
 export const Calendar = () => {
   const { auth } = useAuth();
-  const { customer } = auth;
   const [events, setEvents] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const calendarRef = useRef(null);
   const toast = useToast();
 
@@ -41,8 +40,18 @@ export const Calendar = () => {
       return;
     }
 
-    startDate = start;
-    onBudgetModalOpen();
+    if(customers?.length > 0){
+      startDate = start;
+      onBudgetModalOpen();
+      return;
+    }
+    
+    toast({
+      status: "info",
+      title: "Evento",
+      description: "Não foi possível obter os clientes",
+      isClosable: true
+    });
   }
 
   const handleEditEventSelectAndOpenModal = (event) => {
@@ -70,47 +79,23 @@ export const Calendar = () => {
     setEvents((prevEvents) => [...prevEvents, event]);
   };
 
-  /* CUSTOMER */
   useEffect(() => {
-    if(auth?.user?.admin) return;
-
-    const handleGetOcuppedDays = async () => {
+    const handleGetAllCustomers = async () => {
       try{
-        const { success, data } = await getNextSchedulesController(customer?.customerId);
+        const { success, data } = await getAllCustomersController(auth?.token);
         if(success){
-          data.forEach((dayOcupped, index) => {
-            const ocuppedEvent = {
-              birthdayPerson: `Indisponível${index}`,
-              length: ""
-            };
-            handleAddEvent(ocuppedEvent, dayOcupped, true);
-          });
+          setCustomers(data);
+          console.log(`customers :${JSON.stringify(customers)}`);
         }
       }catch(error){
-        console.error("Erro ao obter os dias ocupados por agendamentos");
-        console.error(error?.message);
-      }
-    }
-    handleGetOcuppedDays();
-
-    const handleGetCustomerActiveEvent = async () => {
-      try{
-        const { success, data } = await getActiveEventScheduleByCustomerController(customer?.customerId, auth?.token);
-        if(success){
-          const { events, eventDateTime } = data;
-          events.forEach(event => {
-            handleAddEvent(event, eventDateTime);
-          });
-        }
-      }catch(error){
-        console.error("Erro ao obter evento ativo do cliente");
+        console.error("Erro ao buscar os clientes cadastrados");
         console.error(error?.message);
       }
     };
-    handleGetCustomerActiveEvent();
-  }, [customer, auth.token, auth.user.admin]);
 
-  /* ADMIN */
+    handleGetAllCustomers();
+  }, [auth.token, auth]);
+
   useEffect(() => {
     if(!auth?.user?.admin) return;
 
@@ -174,6 +159,7 @@ export const Calendar = () => {
         startDate={startDate}
         isOpen={isBudgetModalOpen}
         onClose={onBudgetModalClose}
+        customers={customers}
       />
     </>
   );

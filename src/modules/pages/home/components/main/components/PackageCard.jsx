@@ -10,7 +10,7 @@ import {
     ListItem,
     ListIcon
 } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
+import { IoIosCheckbox } from "react-icons/io";
 import PropTypes from "prop-types";
 
 export const PackageCard = ({ image, title, description, items }) => {
@@ -55,7 +55,8 @@ export const PackageCard = ({ image, title, description, items }) => {
                                     fontSize={{ base: "12px", sm: "14px", md: "md" }}
                                 >
                                     <ListIcon 
-                                        as={CheckIcon} 
+                                        fontSize="20px"
+                                        as={IoIosCheckbox} 
                                         color='green.500'
                                     />
                                     {item}

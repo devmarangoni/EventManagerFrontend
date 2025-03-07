@@ -1,8 +1,7 @@
 import { Flex, List, ListIcon, ListItem, Avatar, Text, useToast } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
-import { HouseIcon, ScheduleIcon } from "@common/icons/icons.jsx";
 import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
-import { WarningIcon, ArrowLeftIcon } from "@chakra-ui/icons";
+import { IoIosPeople, IoIosLogOut, IoIosHome, IoIosCalendar } from "react-icons/io";
 import withoutPhoto from "@images/customerCard/withoutPhoto.png";
 import { useLoading } from "@common/hooks/Loading/useLoading";
 
@@ -44,7 +43,8 @@ export function Sidebar(){
         >
             <ListItem>
                 <NavLink to="/profile">
-                    <Flex 
+                    <Flex
+                        cursor="pointer"
                         justify="center" 
                         align="center" 
                         bg="purple.200"
@@ -65,74 +65,94 @@ export function Sidebar(){
                     </Flex>
                 </NavLink>
             </ListItem>
-            <ListItem>
+            <ListItem
+                cursor="pointer"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                bg="purple.200" 
+                borderRadius="12px"
+                _hover={{
+                    bg: "purple.300"
+                }}
+            >
                 <NavLink to="/">
-                    <Flex 
-                        justify="center" 
+                    <Flex
+                        justify="start" 
                         align="center" 
-                        bg="purple.200"
                         p="12px"
-                        borderRadius="12px"
-                        _hover={{
-                            bg: "purple.300"
-                        }}
                     >
-                        <ListIcon as={HouseIcon}/>
+                        <ListIcon fontSize="25px" as={IoIosHome}/>
                         <Text>Inicio</Text>
                     </Flex>
                 </NavLink>
             </ListItem>
-            <ListItem>
+            <ListItem
+                cursor="pointer"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                bg="purple.200" 
+                borderRadius="12px"
+                _hover={{
+                    bg: "purple.300"
+                }}
+            >
                 <NavLink to="/calendar">
-                    <Flex 
-                        justify="center" 
+                    <Flex
+                        justify="start" 
                         align="center" 
-                        bg="purple.200"
                         p="12px"
-                        borderRadius="12px"
-                        _hover={{
-                            bg: "purple.300"
-                        }}
                     >
-                        <ListIcon as={ScheduleIcon}/>
-                        <Text>Eventos</Text>
+                        <ListIcon fontSize="25px" as={IoIosCalendar}/>
+                        <Text>Calendário</Text>
                     </Flex>
                 </NavLink>
             </ListItem>
             {auth?.user?.admin ?
                 (
-                    <ListItem>
+                    <ListItem
+                        cursor="pointer"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        bg="purple.200" 
+                        borderRadius="12px"
+                        _hover={{
+                            bg: "purple.300"
+                        }}
+                    >
                         <NavLink to="/customers">
-                            <Flex 
-                                justify="center" 
+                            <Flex
+                                justify="start" 
                                 align="center" 
-                                bg="purple.200"
                                 p="12px"
-                                borderRadius="12px"
-                                _hover={{
-                                    bg: "purple.300"
-                                }}
                             >
-                                <ListIcon as={WarningIcon}/>
+                                <ListIcon fontSize="25px" as={IoIosPeople}/>
                                 <Text>Clientes</Text>
                             </Flex>
                         </NavLink>
                     </ListItem>
                 ) : null 
             }
-            <ListItem>
+            <ListItem
+                cursor="pointer"
+                onClick={logoutUser}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                bg="purple.200" 
+                borderRadius="12px"
+                _hover={{
+                    bg: "purple.300"
+                }}
+            >
                 <Flex
-                    onClick={logoutUser}
-                    justify="center" 
-                    alignSelf="flex-end" 
-                    bg="purple.200"
+                    justify="start" 
+                    align="center" 
                     p="12px"
-                    borderRadius="12px"
-                    _hover={{
-                        bg: "purple.300"
-                    }}
                 >
-                    <ListIcon as={ArrowLeftIcon}/>
+                    <ListIcon fontSize="25px" as={IoIosLogOut}/>
                     <Text>Sair</Text>
                 </Flex>
             </ListItem>

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import getAllCustomersController from "@controllers/customer/getAllCustomersController.js";
 import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
 import { CustomersTable } from "@components/customers/components/CustomersTable.jsx";
-import { SearchIcon } from "@chakra-ui/icons";
+import { IoMdSearch, IoIosAdd } from "react-icons/io";
 import { isBlank } from "@common/utils/isBlank.js";
 
 let customers = [];
@@ -90,10 +90,21 @@ export const Customers = () => {
               bg="transparent"
               onClick={handleInputChange}
             >
-              <SearchIcon />
+              <IoMdSearch fontSize="30px" />
             </Button>
           </InputRightElement>
         </InputGroup>
+        <Button
+          h="100%"
+          size="sm"
+          bg="green.300"
+          _hover={{
+            bg: "green.400"
+          }}
+          onClick={handleInputChange}
+        >
+          <IoIosAdd fontSize="40px" />
+        </Button>
       </Flex>
 
       <Flex w="100%" marginTop={{ base: "2em", md: "4em" }}>

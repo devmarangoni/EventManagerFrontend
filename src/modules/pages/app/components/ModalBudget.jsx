@@ -18,39 +18,39 @@ import { useState } from "react";
 import { formatToDateTimeLocal, formatToScheduleObjTime } from "@pages/app/utils/dateUtils.js";
 import { useToast } from "@chakra-ui/react";
 import { useLoading } from "@common/hooks/Loading/useLoading";
-import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
 import createEventController from "@controllers/partyEvent/createEventController.js";
 import createScheduleController from "@controllers/schedule/createScheduleController";
+import { useAuth } from "@auth/hooks/AuthContext/UseAuth.jsx";
+import { isBlank } from "@common/utils/isBlank.js";
 
-const requiredFields = ["length", "address", "theme", "birthdayPerson", "schedule"];
+const requiredFields = ["length", "address", "theme", "birthdayPerson"];
+const INITIAL_BUDGET = {
+    customer: "",
+    length: "M",
+    address: null,
+    theme: null,
+    description: null,
+    birthdayPerson: null,
+    value: 0.0,
+    isBudget: true,
+    finished: false
+};
 
-export const ModalBudget = ({ startDate, addEvent, isOpen, onClose }) => {
+export const ModalBudget = ({ startDate, addEvent, isOpen, onClose, customers }) => {
     const toast = useToast();
     const { showLoading, hideLoading } = useLoading();
     const [checkInvalidInputs, setCheckInvalidInputs] = useState(false);
     const { auth } = useAuth();
-    const customer = {
-        ...auth.customer,
-        user: auth.user
-    }
 
-    const [budget, setBudget] = useState({
-        length: "M",
-        address: null,
-        customer: customer,
-        theme: null,
-        description: null,
-        birthdayPerson: null,
-        value: 0.0,
-        isBudget: true,
-        finished: false
-    });
+    const [budget, setBudget] = useState(INITIAL_BUDGET);
 
     const handleBudgetInputChange = (e) => {
         setBudget({
             ...budget,
             [e.target.name]: e.target.value
         });
+
+        console.log(budget);
     }
 
     const [schedule, setSchedule] = useState({
@@ -68,9 +68,20 @@ export const ModalBudget = ({ startDate, addEvent, isOpen, onClose }) => {
     const handleBudgetValidation = () => {
         try{
             const missingFields = requiredFields.filter(field => !budget[field]);
+            console.log(missingFields);
             const missingSchedule = !schedule.eventDateTime;
-            if(missingFields.length > 0 && missingSchedule){
+            const missingCustomer = isBlank(budget.customer);
+            if(missingFields.length > 0 || missingSchedule || missingCustomer){
                 setCheckInvalidInputs(true);
+
+                if(missingCustomer){
+                    throw new Error("Escolha um cliente");
+                }
+
+                if(missingSchedule){
+                    throw new Error("Preencha a hora do evento");
+                }
+     
                 throw new Error("Preencha todos os campos necessários");
             }
 
@@ -88,7 +99,13 @@ export const ModalBudget = ({ startDate, addEvent, isOpen, onClose }) => {
     const handleCreateEvent = async () => {
         try{
             showLoading();
-            const { success, message, data } = await createEventController(budget, auth.token);
+            const customerId = budget.customer;
+            const budgetWithCustomer = {
+                ...budget,
+                customer: customers.find(customer => customerId === customer.customerId)
+            }
+
+            const { success, message, data } = await createEventController(budgetWithCustomer, auth.token);
             if(success){
                 await handleScheduleEvent(data.eventId);     
             }
@@ -101,7 +118,6 @@ export const ModalBudget = ({ startDate, addEvent, isOpen, onClose }) => {
             });
             hideLoading();
         }catch(error){
-            console.error("Erro ao cadastrar cliente");
             console.error(error?.message);
             toast({
                 status: "error",
@@ -110,6 +126,7 @@ export const ModalBudget = ({ startDate, addEvent, isOpen, onClose }) => {
                 isClosable: true
             });
         }finally{
+            setBudget(INITIAL_BUDGET);
             handleOnCloseModal();
         }
     }
@@ -163,6 +180,27 @@ export const ModalBudget = ({ startDate, addEvent, isOpen, onClose }) => {
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                     <VStack spacing={2}>
+                        <FormControl 
+                            isRequired={true}
+                            w="100%"
+                        >
+                            <FormLabel>Cliente</FormLabel>
+                            <Select 
+                                placeholder="Escolha o cliente"
+                                name="customer"
+                                onChange={handleBudgetInputChange}
+                                value={budget.customer}
+                            >
+                                {
+                                    customers?.map(customer => (
+                                        <option 
+                                            key={customer.customerId} 
+                                            value={customer.customerId}
+                                        >{ customer.name }</option>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
                         <FormField
                             onChange={handleBudgetInputChange}
                             label="Tema"
@@ -244,5 +282,6 @@ ModalBudget.propTypes = {
     startDate: PropTypes.any,
     addEvent: PropTypes.func,
     isOpen: PropTypes.bool,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
+    customers: PropTypes.array
 }
