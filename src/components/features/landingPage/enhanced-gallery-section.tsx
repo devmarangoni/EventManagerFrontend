@@ -122,7 +122,11 @@ export default function EnhancedGallerySection() {
   const filteredImages = activeCategory === "all" ? images : images.filter((img) => img.category === activeCategory)
 
   return (
-    <section id="gallery" className={cn("py-20 transition-colors duration-300", isDark ? "bg-gray-900" : "bg-gray-50")}>
+    <section
+      id="gallery"
+      className={cn("py-20 transition-colors duration-300 relative", isDark ? "bg-gray-900" : "bg-gray-50")}
+      style={{ zIndex: 2 }}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.h2

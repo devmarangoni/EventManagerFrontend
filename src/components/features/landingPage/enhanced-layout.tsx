@@ -55,6 +55,7 @@ export default function EnhancedLayout({ children }: { children: React.ReactNode
               : "bg-white/90 backdrop-blur-md shadow-md py-2"
             : "bg-transparent py-4",
         )}
+        style={{ position: "relative", zIndex: 10 }}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
           <a

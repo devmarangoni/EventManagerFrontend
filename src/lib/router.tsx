@@ -3,6 +3,7 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
 import LandingPage from "@/pages/landingPage"
 import Login from "@/pages/login"
 import Home from "@/pages/home"
+import Calendar from "@/pages/calendar"
 
 export const router = createBrowserRouter([
   {
@@ -21,15 +22,15 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  {
+    path: "/calendar",
+    element: (
+      <ProtectedRoute>
+        <Calendar />
+      </ProtectedRoute>
+    ),
+  },
   // Outras rotas protegidas seguem o mesmo padrão
-  // {
-  //   path: "/calendar",
-  //   element: (
-  //     <ProtectedRoute>
-  //       <Calendar />
-  //     </ProtectedRoute>
-  //   ),
-  // },
   // {
   //   path: "/customers",
   //   element: (

@@ -12,7 +12,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <Sidebar />
 
       {/* Main content */}
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 h-screen overflow-y-auto">
         <div className="container py-6 lg:py-8 px-6 lg:px-8">
           <Breadcrumb />
           {children}
@@ -21,3 +21,4 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   )
 }
+

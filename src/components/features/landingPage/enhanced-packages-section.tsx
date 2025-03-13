@@ -93,7 +93,11 @@ export default function EnhancedPackagesSection() {
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
   return (
-    <section id="packages" className={cn("py-20 transition-colors duration-300", isDark ? "bg-gray-800" : "bg-white")}>
+    <section
+      id="packages"
+      className={cn("py-20 transition-colors duration-300 relative", isDark ? "bg-gray-800" : "bg-white")}
+      style={{ zIndex: 2 }}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.h2

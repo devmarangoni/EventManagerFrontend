@@ -103,14 +103,14 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
         <Button
           variant="ghost"
           size="icon"
-          className="lg:flex hidden h-9 w-9" // Increased button size
+          className="lg:flex hidden h-9 w-9"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           {isCollapsed ? <Menu className="h-6 w-6" /> : <X className="h-6 w-6" />}
         </Button>
       </div>
 
-      <div className="flex-1 px-3 py-4">
+      <div className="flex-1 overflow-y-auto px-3 py-4">
         <NavItems />
       </div>
 
@@ -183,8 +183,6 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="lg:hidden h-10 w-10">
-          {" "}
-          {/* Increased button size */}
           <Menu className="h-6 w-6" />
           <span className="sr-only">Abrir menu</span>
         </Button>
@@ -204,7 +202,7 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
       {/* Desktop Sidebar */}
       <aside
         className={cn(
-          "hidden lg:block border-r",
+          "hidden lg:block border-r h-screen sticky top-0",
           isCollapsed ? "w-[80px]" : "w-[280px]",
           "transition-all duration-300 ease-in-out",
         )}

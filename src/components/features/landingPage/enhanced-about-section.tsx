@@ -83,7 +83,11 @@ export default function EnhancedAboutSection() {
   ]
 
   return (
-    <section id="about" className={cn("py-20 transition-colors duration-300", isDark ? "bg-gray-900" : "bg-purple-50")}>
+    <section
+      id="about"
+      className={cn("py-20 transition-colors duration-300 relative", isDark ? "bg-gray-900" : "bg-purple-50")}
+      style={{ zIndex: 2 }}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.h2
@@ -115,43 +119,53 @@ export default function EnhancedAboutSection() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        {/* Updated grid layout with better responsive behavior */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 items-center max-w-7xl mx-auto">
+          {/* Image container with fixed aspect ratio */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
+            className="w-full h-full flex items-center justify-center" // Added flex and alignment classes
           >
-            <img
-              src={partyImageUrls[8] || "/placeholder.svg"}
-              alt="Sobre Maira Gasparini"
-              className="rounded-xl shadow-lg w-full h-auto object-cover"
-            />
+            <div className="relative aspect-[16/10] rounded-xl shadow-lg overflow-hidden w-full">
+              <img
+                src={partyImageUrls[7] || "/placeholder.svg"}
+                alt="Sobre Maira Gasparini"
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </motion.div>
 
+          {/* Text content with consistent width */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
-            className="flex flex-col justify-center"
+            className="flex flex-col justify-center h-full"
           >
             <AnimatedCard isDark={isDark}>
               <h3 className="text-2xl font-bold mb-4">Nossa História</h3>
-              <p className={cn("mb-6", isDark ? "text-gray-400" : "text-gray-600")}>
-                Fundada em 2010, a Maira Gasparini nasceu da paixão por criar experiências memoráveis. Começamos
-                pequeno, com festas íntimas e aniversários modestos, mas nossa dedicação à excelência e atenção aos
-                detalhes rapidamente nos destacou no mercado.
-              </p>
-              <p className={isDark ? "text-gray-400" : "text-gray-600"}>
-                Hoje, somos reconhecidos como uma das principais empresas de decoração de festas do país, com uma equipe
-                talentosa e apaixonada que transforma cada projeto em uma experiência única e inesquecível.
-              </p>
+              <div className="space-y-4">
+                <p className={cn("", isDark ? "text-gray-400" : "text-gray-600")}>
+                  Fundada em 2010, a Maira Gasparini nasceu da paixão por criar experiências memoráveis. Começamos
+                  pequeno, com festas íntimas e aniversários modestos, mas nossa dedicação à excelência e atenção aos
+                  detalhes rapidamente nos destacou no mercado.
+                </p>
+                <p className={isDark ? "text-gray-400" : "text-gray-600"}>
+                  Hoje, somos reconhecidos como uma das principais empresas de decoração de festas do país, com uma
+                  equipe talentosa e apaixonada que transforma cada projeto em uma experiência única e inesquecível.
+                </p>
+              </div>
             </AnimatedCard>
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Features grid with consistent spacing */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {features.map((feature, index) => (
             <FeatureCard
               key={index}

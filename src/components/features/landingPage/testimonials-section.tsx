@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react"
 import { useTheme } from "@/context/theme/ThemeContext"
 import { cn } from "@/lib/utils"
@@ -67,7 +67,11 @@ export default function TestimonialsSection() {
   }
 
   return (
-    <section id="testimonials" className={cn("py-20 text-white", isDark ? "bg-purple-950" : "bg-purple-900")}>
+    <section
+      id="testimonials"
+      className={cn("py-20 text-white relative overflow-hidden", isDark ? "bg-purple-950" : "bg-purple-900")}
+      style={{ zIndex: 2 }}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.h2
@@ -97,46 +101,51 @@ export default function TestimonialsSection() {
           </div>
 
           <div className="relative z-10">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{
-                  opacity: index === activeIndex ? 1 : 0,
-                  x: index === activeIndex ? 0 : 100,
-                  display: index === activeIndex ? "block" : "none",
-                }}
-                transition={{ duration: 0.5 }}
-                className={cn("backdrop-blur-sm rounded-xl p-8 shadow-xl", isDark ? "bg-purple-900/30" : "bg-white/10")}
-              >
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                  <div className="flex-shrink-0">
-                    <img
-                      src={testimonial.image || "/placeholder.svg"}
-                      alt={testimonial.name}
-                      className="w-20 h-20 rounded-full object-cover border-2 border-purple-400"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={i < testimonial.rating ? "text-yellow-400" : "text-gray-400"}
-                          fill={i < testimonial.rating ? "currentColor" : "none"}
-                          size={20}
+            <div className="min-h-[400px] md:min-h-[300px] relative">
+              {" "}
+              {/* Adjusted minimum heights */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0"
+                >
+                  <div
+                    className={cn(
+                      "rounded-xl p-6 md:p-8 h-full flex flex-col",
+                      isDark ? "bg-purple-900/30" : "bg-white/10",
+                    )}
+                  >
+                    <div className="flex flex-col md:flex-row items-center md:items-start gap-6 h-full">
+                      <div className="flex-shrink-0">
+                        <img
+                          src={testimonials[activeIndex].image || "/placeholder.svg"}
+                          alt={testimonials[activeIndex].name}
+                          className="w-20 h-20 rounded-full object-cover border-2 border-purple-400"
                         />
-                      ))}
-                    </div>
-                    <p className="text-lg mb-6 italic">{testimonial.content}</p>
-                    <div>
-                      <h4 className="text-xl font-semibold">{testimonial.name}</h4>
-                      <p className="text-purple-300">{testimonial.role}</p>
+                      </div>
+                      <div className="flex flex-col justify-between flex-1">
+                        <div className="text-center md:text-left">
+                          <div className="flex justify-center md:justify-start mb-4">
+                            {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
+                              <Star key={i} className="text-yellow-400 fill-current" size={20} />
+                            ))}
+                          </div>
+                          <p className="text-base md:text-lg mb-6 italic">{testimonials[activeIndex].content}</p>
+                        </div>
+                        <div className="text-center md:text-left mt-4">
+                          <h4 className="text-xl font-semibold">{testimonials[activeIndex].name}</h4>
+                          <p className="text-purple-300">{testimonials[activeIndex].role}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
 
           <div className="flex justify-center mt-8 gap-4">
