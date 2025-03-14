@@ -179,6 +179,7 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("Form submitted", { formData, scheduleData })
 
     // Don't allow editing if not editable
     if (!isEditable) {
@@ -206,46 +207,52 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
         return
       }
 
+      console.log("Submitting event", event?.eventId ? "update" : "create")
+
       // Create or update event
       const eventResponse = event?.eventId
         ? await updateEventService(formData, auth.token)
         : await createEventService(formData, auth.token)
 
-      if (eventResponse.success && eventResponse.data) {
-        if (!event?.eventId) {
-          const event = eventResponse.data as EventModel
+      console.log("Event response", eventResponse)
 
+      if (eventResponse.success && eventResponse.data) {
+        const updatedEvent = eventResponse.data as EventModel
+
+        if (!event?.eventId) {
+          // Creating a new event
           const schedulePayload: ScheduleRecordDto = {
             eventDateTime: formatToScheduleObjTime(scheduleData.eventDateTime as Date),
-            events: [event.eventId],
+            events: [updatedEvent.eventId],
           }
 
+          console.log("Creating schedule", schedulePayload)
           const scheduleResponse = await createScheduleService(schedulePayload, auth.token)
+          console.log("Schedule response", scheduleResponse)
 
           if (scheduleResponse.success) {
-            const updatedEvent: EventModel = {
-              ...(eventResponse.data as EventModel),
+            const finalEvent: EventModel = {
+              ...updatedEvent,
               schedule: scheduleResponse.data as ScheduleModel,
             }
 
-            onEventCreated?.(updatedEvent)
+            onEventCreated?.(finalEvent)
             onOpenChange(false)
+            toast.success("Evento criado com sucesso!")
           } else {
             throw new Error(scheduleResponse.message)
           }
         } else {
-          // Quando o evento já existe, apenas atualize-o na lista
-          // Mantemos o schedule existente, pois não estamos atualizando o agendamento
-          const updatedEvent: EventModel = {
-            ...(eventResponse.data as EventModel),
-            schedule: event.schedule, // Mantém o schedule original
+          // Updating an existing event
+          // Keep the original schedule
+          const finalEvent: EventModel = {
+            ...updatedEvent,
+            schedule: event.schedule,
           }
 
-          // Usamos o mesmo callback para atualizar o evento na lista
-          onEventCreated?.(updatedEvent)
-
-          // Fechar o modal após atualização bem-sucedida
+          onEventCreated?.(finalEvent)
           onOpenChange(false)
+          toast.success("Evento atualizado com sucesso!")
         }
       } else {
         throw new Error(eventResponse.message)
@@ -348,7 +355,7 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
 
         {/* Wrap the form in a scrollable div */}
         <div className="flex-1 overflow-y-auto pr-2">
-          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 py-4">
+          <form id="eventForm" onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 py-4">
             <div className="grid gap-3 sm:gap-4">
               <div className="grid gap-2 relative">
                 <Label htmlFor="customer" className="text-sm flex items-center gap-1">
@@ -533,7 +540,13 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
             </Button>
             {/* Only show submit button if event is editable */}
             {isEditable && (
-              <Button type="submit" disabled={loading} className="h-9 sm:h-10 text-sm">
+              <Button
+                form="eventForm"
+                type="submit"
+                onClick={handleSubmit}
+                disabled={loading}
+                className="h-9 sm:h-10 text-sm cursor-pointer"
+              >
                 {loading ? "Salvando..." : event?.eventId ? "Atualizar" : "Criar Evento"}
               </Button>
             )}
@@ -571,4 +584,3 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
     </Dialog>
   )
 }
-

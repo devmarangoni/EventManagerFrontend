@@ -50,7 +50,7 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingEvents, setIsLoadingEvents] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<EventModel | undefined>(undefined) // Changed from null to undefined
+  const [selectedEvent, setSelectedEvent] = useState<EventModel | undefined>(undefined)
   const [isEventModalOpen, setIsEventModalOpen] = useState(false)
   const { auth } = useAuth()
   const { theme } = useTheme()
@@ -250,8 +250,8 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
 
   return (
     <>
-      <Card ref={detailsRef} className={cn("transition-all duration-300", isDark ? "bg-gray-900/50" : "bg-white/50")}>
-        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-2 space-y-2 sm:space-y-0">
+      <Card ref={detailsRef} className={cn("h-full overflow-auto", isDark ? "bg-gray-900/50" : "bg-white/50")}>
+        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-2 space-y-2 sm:space-y-0 sticky top-0 z-10 bg-card">
           <CardTitle className="text-xl">Detalhes do Cliente</CardTitle>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             {isEditing ? (
@@ -306,7 +306,7 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
         </CardHeader>
         <CardContent className="pt-4">
           <Tabs defaultValue="info">
-            <TabsList className="mb-4">
+            <TabsList className="mb-4 sticky top-16 z-10 bg-card">
               <TabsTrigger value="info">Informações</TabsTrigger>
               <TabsTrigger value="events">Eventos</TabsTrigger>
             </TabsList>

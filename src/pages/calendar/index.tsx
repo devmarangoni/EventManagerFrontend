@@ -97,7 +97,12 @@ export default function CalendarPage() {
     <DashboardLayout>
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h1 className="text-3xl font-bold tracking-tight">Calendário</h1>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Calendário</h1>
+            <p className="text-muted-foreground">
+              Visualize e gerencie todos os seus eventos e orçamentos em um único lugar.
+            </p>
+          </div>
         </div>
 
         <div
@@ -129,3 +134,4 @@ export default function CalendarPage() {
     </DashboardLayout>
   )
 }
+

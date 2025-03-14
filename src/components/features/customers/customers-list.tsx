@@ -60,9 +60,9 @@ export function CustomersList({ customers, isLoading, selectedCustomerId, onSele
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="h-full">
       <Table>
-        <TableHeader>
+        <TableHeader className="sticky top-0 bg-card z-10">
           <TableRow>
             <TableHead>
               <Button

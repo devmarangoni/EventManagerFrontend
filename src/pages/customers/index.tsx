@@ -94,57 +94,63 @@ export default function CustomersPage() {
   return (
     <DashboardLayout>
       <ErrorBoundary>
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 min-h-[80px]">
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold tracking-tight">Clientes</h1>
-              <p className="text-muted-foreground">Gerencie seus clientes e visualize seus eventos.</p>
+        <div className="flex flex-col h-[calc(100vh-8rem)]">
+          {/* Fixed header section */}
+          <div className="flex-none space-y-4 mb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold tracking-tight">Clientes</h1>
+                <p className="text-muted-foreground">Gerencie seus clientes e visualize seus eventos.</p>
+              </div>
+              <div className="w-full sm:w-auto">
+                <Button
+                  onClick={() => setIsAddModalOpen(true)}
+                  className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600"
+                >
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Adicionar Cliente
+                </Button>
+              </div>
             </div>
-            <div className="w-full sm:w-auto">
-              <Button
-                onClick={() => setIsAddModalOpen(true)}
-                className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600"
-              >
-                <UserPlus className="mr-2 h-4 w-4" />
-                Adicionar Cliente
-              </Button>
+
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por nome, email ou telefone..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-10"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
             </div>
           </div>
 
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Buscar por nome, email ou telefone..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Scrollable content area */}
+          <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
             <div
               className={cn(
-                "lg:col-span-2 rounded-lg border bg-card text-card-foreground shadow-sm",
+                "lg:col-span-2 rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col",
                 isDark ? "bg-gray-900/50" : "bg-white/50",
               )}
             >
-              <CustomersList
-                customers={filteredCustomers}
-                isLoading={isLoading}
-                selectedCustomerId={selectedCustomer?.customerId}
-                onSelectCustomer={setSelectedCustomer}
-              />
+              <div className="flex-grow overflow-auto">
+                <CustomersList
+                  customers={filteredCustomers}
+                  isLoading={isLoading}
+                  selectedCustomerId={selectedCustomer?.customerId}
+                  onSelectCustomer={setSelectedCustomer}
+                />
+              </div>
             </div>
 
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 overflow-auto">
               {selectedCustomer ? (
                 <CustomerDetails
                   customer={selectedCustomer}
