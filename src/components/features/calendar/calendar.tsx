@@ -86,9 +86,29 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
   }
 
   function handleSelectDate(date: Date, event?: EventModel) {
+    // Allow clicking on past dates if there's a finished event
     const isPastDate = date < new Date(today.setHours(0, 0, 0, 0))
-    if (!isPastDate || (event && !event.finished)) {
-      onSelectDate?.(date, event)
+
+    if (event) {
+      // If there's an event, check if it's editable (budget and not finished)
+      if (!event.isBudget && !event.finished) {
+        // For confirmed events that are not finished, show them but don't allow editing
+        onSelectDate?.(date, event)
+        return
+      } else if (event.finished) {
+        // For finished events, just show them
+        onSelectDate?.(date, event)
+        return
+      } else {
+        // For budget events, allow editing
+        onSelectDate?.(date, event)
+        return
+      }
+    }
+
+    // For dates without events
+    if (!isPastDate) {
+      onSelectDate?.(date)
     }
   }
 
@@ -102,39 +122,31 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
           </h2>
           <div className="flex items-center gap-2">
             <Button
-              variant="outline"
-              size="sm"
               onClick={handleToday}
-              className={cn(
-                "bg-primary/10 hover:bg-primary/20 border-primary/20 text-primary flex items-center gap-2",
-                isDark && "[&_svg]:text-white",
-              )}
+              className="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white"
+              size="sm"
             >
-              <CalendarDays className="h-4 w-4" />
+              <CalendarDays className="h-4 w-4 mr-2" />
               Hoje
             </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handlePreviousMonth}
-              className={cn(
-                "bg-primary/10 hover:bg-primary/20 border-primary/20",
-                isDark ? "hover:bg-purple-600/20 hover:text-purple-400" : "hover:bg-pink-600/20 hover:text-pink-600",
-              )}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleNextMonth}
-              className={cn(
-                "bg-primary/10 hover:bg-primary/20 border-primary/20",
-                isDark ? "hover:bg-purple-600/20 hover:text-purple-400" : "hover:bg-pink-600/20 hover:text-pink-600",
-              )}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+            <div className="flex gap-1">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handlePreviousMonth}
+                className="h-9 w-9 rounded-lg bg-background hover:bg-accent"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleNextMonth}
+                className="h-9 w-9 rounded-lg bg-background hover:bg-accent"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
 
