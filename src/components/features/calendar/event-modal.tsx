@@ -193,6 +193,13 @@ export function EventModal({ open, onOpenChange, date, event, onEventCreated }: 
           } else {
             throw new Error(scheduleResponse.message)
           }
+        } else {
+          const updatedEvent: EventModel = {
+            ...(eventResponse.data as EventModel),
+            schedule: event.schedule,
+          }
+
+          onEventCreated?.(updatedEvent)
         }
 
         toast.success(event?.eventId ? "Evento atualizado!" : "Evento criado!")

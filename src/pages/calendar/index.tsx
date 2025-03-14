@@ -68,11 +68,28 @@ export default function CalendarPage() {
   }
 
   const handleEventCreated = (newEvent: EventModel) => {
-    if (newEvent.schedule) {
-      setEvents((prevEvents) => [...prevEvents, newEvent])
-      toast.success("Evento adicionado ao calendário", {
-        description: `${newEvent.birthdayPerson} - ${new Date(newEvent.schedule.eventDateTime).toLocaleDateString()}`,
+    // Verificar se o evento já existe na lista
+    const existingEventIndex = events.findIndex((e) => e.eventId === newEvent.eventId)
+
+    if (existingEventIndex >= 0) {
+      // Se o evento já existe, atualize-o
+      setEvents((prevEvents) => {
+        const updatedEvents = [...prevEvents]
+        updatedEvents[existingEventIndex] = newEvent
+        return updatedEvents
       })
+
+      toast.success("Evento atualizado no calendário", {
+        description: `${newEvent.birthdayPerson} - ${new Date(newEvent.schedule?.eventDateTime || "").toLocaleDateString()}`,
+      })
+    } else {
+      // Se for um novo evento, adicione-o à lista
+      if (newEvent.schedule) {
+        setEvents((prevEvents) => [...prevEvents, newEvent])
+        toast.success("Evento adicionado ao calendário", {
+          description: `${newEvent.birthdayPerson} - ${new Date(newEvent.schedule?.eventDateTime || "").toLocaleDateString()}`,
+        })
+      }
     }
   }
 
