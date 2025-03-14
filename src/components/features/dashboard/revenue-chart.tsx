@@ -18,13 +18,14 @@ interface ChartData {
   value: number
 }
 
+// Remova o código de carregamento existente, pois agora usamos esqueletos no componente pai
 export function RevenueChart({ events, timeFilter, isLoading }: RevenueChartProps) {
   const [chartData, setChartData] = useState<ChartData[]>([])
   const { theme } = useTheme()
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
   useEffect(() => {
-    if (isLoading) return
+    // Não precisamos verificar isLoading aqui, pois o componente pai já lida com isso
 
     // Include all events, not just confirmed ones
     // We'll filter by isBudget later if needed
@@ -131,14 +132,6 @@ export function RevenueChart({ events, timeFilter, isLoading }: RevenueChartProp
       setChartData(data)
     }
   }, [events, timeFilter, isLoading])
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    )
-  }
 
   const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {

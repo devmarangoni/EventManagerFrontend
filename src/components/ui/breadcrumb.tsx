@@ -2,6 +2,14 @@ import { ChevronRight, Home } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 import { cn } from "@/lib/utils"
 
+// Mapeamento de rotas para nomes em português
+const routeNameMap: Record<string, string> = {
+  home: "Início",
+  calendar: "Calendário",
+  customers: "Clientes",
+  // Adicione mais rotas conforme necessário
+}
+
 export function Breadcrumb() {
   const location = useLocation()
   const paths = location.pathname.split("/").filter(Boolean)
@@ -18,6 +26,9 @@ export function Breadcrumb() {
           const href = `/${paths.slice(0, index + 1).join("/")}`
           const isLast = index === paths.length - 1
 
+          // Obter o nome traduzido ou capitalizar o nome original
+          const displayName = routeNameMap[path] || path.charAt(0).toUpperCase() + path.slice(1)
+
           return (
             <li key={path} className="flex items-center">
               <ChevronRight className="h-4 w-4 text-muted-foreground/50" />
@@ -29,7 +40,7 @@ export function Breadcrumb() {
                 )}
                 aria-current={isLast ? "page" : undefined}
               >
-                {path}
+                {displayName}
               </Link>
             </li>
           )

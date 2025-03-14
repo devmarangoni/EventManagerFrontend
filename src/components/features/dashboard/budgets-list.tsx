@@ -69,14 +69,6 @@ export function BudgetsList({ budgets, isLoading, onBudgetConfirmed }: BudgetsLi
     }).format(date)
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[250px]">
-        <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    )
-  }
-
   if (budgets.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[250px] text-center">

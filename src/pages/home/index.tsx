@@ -17,6 +17,8 @@ import { BudgetsList } from "@/components/features/dashboard/budgets-list"
 import { RevenueChart } from "@/components/features/dashboard/revenue-chart"
 import { EventSizeChart } from "@/components/features/dashboard/event-size-chart"
 import { useTheme } from "@/context/theme/ThemeContext"
+// Adicione estes imports no topo do arquivo
+import { Skeleton } from "@/components/ui/skeleton"
 
 type TimeFilter = "monthly" | "quarterly" | "yearly" | "all"
 
@@ -31,18 +33,22 @@ export default function Home() {
 
   useEffect(() => {
     if (auth.token) {
+      setIsLoading(true)
       fetchData()
     }
   }, [auth.token])
 
   const fetchData = async () => {
     try {
-      setIsLoading(true)
+      // Adicione um pequeno atraso para garantir que os esqueletos sejam exibidos
+      // Isso evita o "flash" de carregamento em conexões muito rápidas
+      const loadingPromise = new Promise((resolve) => setTimeout(resolve, 300))
 
       // Fetch schedules and customers in parallel
       const [schedulesResponse, customersResponse] = await Promise.all([
         getAllSchedulesService(auth.token as string),
         getAllCustomersService(auth.token as string),
+        loadingPromise, // Aguarde pelo menos 300ms para evitar flashes de carregamento
       ])
 
       if (schedulesResponse.success && schedulesResponse.data) {
@@ -190,8 +196,17 @@ export default function Home() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <p className="text-xs text-muted-foreground pt-1">{stat.description}</p>
+                {isLoading ? (
+                  <>
+                    <Skeleton className="h-7 w-16 mb-1" />
+                    <Skeleton className="h-4 w-24" />
+                  </>
+                ) : (
+                  <>
+                    <div className="text-2xl font-bold">{stat.value}</div>
+                    <p className="text-xs text-muted-foreground pt-1">{stat.description}</p>
+                  </>
+                )}
               </CardContent>
             </Card>
           ))}
@@ -217,16 +232,25 @@ export default function Home() {
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-3xl font-bold">R$ {expectedProfit.toFixed(2)}</div>
-                <p className="text-xs text-muted-foreground pt-1">
-                  {timeFilter === "monthly"
-                    ? "Este mês"
-                    : timeFilter === "quarterly"
-                      ? "Este trimestre"
-                      : timeFilter === "yearly"
-                        ? "Este ano"
-                        : "Total"}
-                </p>
+                {isLoading ? (
+                  <>
+                    <Skeleton className="h-8 w-32 mb-1" />
+                    <Skeleton className="h-4 w-20" />
+                  </>
+                ) : (
+                  <>
+                    <div className="text-3xl font-bold">R$ {expectedProfit.toFixed(2)}</div>
+                    <p className="text-xs text-muted-foreground pt-1">
+                      {timeFilter === "monthly"
+                        ? "Este mês"
+                        : timeFilter === "quarterly"
+                          ? "Este trimestre"
+                          : timeFilter === "yearly"
+                            ? "Este ano"
+                            : "Total"}
+                    </p>
+                  </>
+                )}
               </div>
               <div
                 className={cn(
@@ -241,7 +265,24 @@ export default function Home() {
 
             {/* Revenue Chart */}
             <div className="mt-6 h-[200px]">
-              <RevenueChart events={events} timeFilter={timeFilter} isLoading={isLoading} />
+              {isLoading ? (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="grid grid-cols-12 gap-2 w-full h-[150px]">
+                    {Array.from({ length: 12 }).map((_, i) => (
+                      <Skeleton
+                        key={i}
+                        className="w-full"
+                        style={{
+                          height: `${Math.max(20, Math.floor(Math.random() * 150))}px`,
+                          marginTop: "auto",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <RevenueChart events={events} timeFilter={timeFilter} isLoading={isLoading} />
+              )}
             </div>
           </CardContent>
         </Card>
@@ -264,7 +305,18 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <div className="h-[250px]">
-                <EventSizeChart eventsBySize={eventsBySize} isLoading={isLoading} />
+                {isLoading ? (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="relative w-[200px] h-[200px] rounded-full overflow-hidden">
+                      <Skeleton className="absolute inset-0" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-[100px] h-[100px] rounded-full bg-background"></div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <EventSizeChart eventsBySize={eventsBySize} isLoading={isLoading} />
+                )}
               </div>
             </CardContent>
           </Card>
@@ -284,11 +336,27 @@ export default function Home() {
               </div>
             </CardHeader>
             <CardContent>
-              <BudgetsList
-                budgets={events.filter((event) => event.isBudget && !event.finished)}
-                isLoading={isLoading}
-                onBudgetConfirmed={() => fetchData()}
-              />
+              {isLoading ? (
+                <div className="space-y-3">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="flex flex-col space-y-2 p-3 border rounded-lg">
+                      <div className="flex justify-between">
+                        <Skeleton className="h-5 w-32" />
+                        <Skeleton className="h-7 w-20" />
+                      </div>
+                      <Skeleton className="h-4 w-40" />
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-4 w-16" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <BudgetsList
+                  budgets={events.filter((event) => event.isBudget && !event.finished)}
+                  isLoading={isLoading}
+                  onBudgetConfirmed={() => fetchData()}
+                />
+              )}
             </CardContent>
           </Card>
         </div>

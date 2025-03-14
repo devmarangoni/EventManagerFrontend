@@ -60,7 +60,7 @@ export function CustomersList({ customers, isLoading, selectedCustomerId, onSele
   }
 
   return (
-    <div className="h-full">
+    <div className="max-h-[calc(100vh-20rem)] overflow-auto">
       <Table>
         <TableHeader className="sticky top-0 bg-card z-10">
           <TableRow>

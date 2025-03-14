@@ -24,7 +24,18 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const navigate = useNavigate()
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  // Modifique o hook useState para inicializar com o valor do localStorage
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    // Tenta recuperar o estado da sidebar do localStorage
+    const savedState = localStorage.getItem("sidebar-collapsed")
+    return savedState === "true"
+  })
+
+  // Adicione um useEffect para salvar o estado no localStorage quando mudar
+  useEffect(() => {
+    localStorage.setItem("sidebar-collapsed", isCollapsed.toString())
+  }, [isCollapsed])
 
   useEffect(() => {
     setMounted(true)
@@ -199,10 +210,10 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
       {/* Mobile Sidebar */}
       <MobileSidebar />
 
-      {/* Desktop Sidebar */}
+      {/* Desktop Sidebar - Add fixed positioning and transition */}
       <aside
         className={cn(
-          "hidden lg:block border-r h-screen sticky top-0",
+          "hidden lg:block border-r h-screen bg-background",
           isCollapsed ? "w-[80px]" : "w-[280px]",
           "transition-all duration-300 ease-in-out",
         )}
