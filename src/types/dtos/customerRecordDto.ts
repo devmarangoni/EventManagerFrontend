@@ -6,4 +6,5 @@ export default interface CustomerRecordDto {
     mobile: string;
     phone?: string;
     email: string;
+    description?: string
 }

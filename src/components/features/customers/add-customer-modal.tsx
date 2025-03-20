@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { AlertTriangle } from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@/context/auth/UseAuth"
@@ -26,11 +27,12 @@ export function AddCustomerModal({ open, onOpenChange, onCustomerAdded }: AddCus
     email: "",
     mobile: "",
     phone: "",
+    description: "", // Adicionado campo de descrição
   })
   const [isLoading, setIsLoading] = useState(false)
   const { auth } = useAuth()
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
@@ -76,6 +78,7 @@ export function AddCustomerModal({ open, onOpenChange, onCustomerAdded }: AddCus
       email: "",
       mobile: "",
       phone: "",
+      description: "", // Resetar descrição também
     })
   }
 
@@ -148,6 +151,19 @@ export function AddCustomerModal({ open, onOpenChange, onCustomerAdded }: AddCus
                 value={formData.phone || ""}
                 onChange={handleInputChange}
                 placeholder="(00) 0000-0000"
+              />
+            </div>
+
+            {/* Novo campo de descrição */}
+            <div className="grid gap-2">
+              <Label htmlFor="description">Descrição (opcional)</Label>
+              <Textarea
+                id="description"
+                name="description"
+                value={formData.description || ""}
+                onChange={handleInputChange}
+                placeholder="Informações adicionais sobre o cliente..."
+                rows={3}
               />
             </div>
           </div>

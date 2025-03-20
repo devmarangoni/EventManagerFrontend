@@ -6,4 +6,5 @@ export default interface CustomerModel {
     phone?: string;
     mobile: string;
     email: string;
+    description?: string
 }

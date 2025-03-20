@@ -5,6 +5,7 @@ import Login from "@/pages/login"
 import Home from "@/pages/home"
 import Calendar from "@/pages/calendar"
 import Customers from "@/pages/customers"
+import ProfilePage from "@/pages/profile";
 
 export const router = createBrowserRouter([
   {
@@ -39,14 +40,12 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  // Outras rotas protegidas seguem o mesmo padrão
-  // 
-  // {
-  //   path: "/profile",
-  //   element: (
-  //     <ProtectedRoute>
-  //       <Profile />
-  //     </ProtectedRoute>
-  //   ),
-  // }
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
+  }
 ])
