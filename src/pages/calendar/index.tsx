@@ -21,7 +21,6 @@ export default function CalendarPage() {
   const { auth } = useAuth()
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
-  // Carregar eventos do calendário
   useEffect(() => {
     const fetchEvents = async () => {
       if (!auth.token) return
@@ -37,7 +36,6 @@ export default function CalendarPage() {
           schedules.forEach((schedule) => {
             if (schedule.events && Array.isArray(schedule.events)) {
               schedule.events.forEach((event) => {
-                // Adiciona o schedule ao evento para que possamos mostrar no calendário
                 allEvents.push({
                   ...event,
                   schedule: schedule,
@@ -68,11 +66,9 @@ export default function CalendarPage() {
   }
 
   const handleEventCreated = (newEvent: EventModel) => {
-    // Verificar se o evento já existe na lista
     const existingEventIndex = events.findIndex((e) => e.eventId === newEvent.eventId)
 
     if (existingEventIndex >= 0) {
-      // Se o evento já existe, atualize-o
       setEvents((prevEvents) => {
         const updatedEvents = [...prevEvents]
         updatedEvents[existingEventIndex] = newEvent
@@ -83,7 +79,6 @@ export default function CalendarPage() {
         description: `${newEvent.birthdayPerson} - ${new Date(newEvent.schedule?.eventDateTime || "").toLocaleDateString()}`,
       })
     } else {
-      // Se for um novo evento, adicione-o à lista
       if (newEvent.schedule) {
         setEvents((prevEvents) => [...prevEvents, newEvent])
         toast.success("Evento adicionado ao calendário", {

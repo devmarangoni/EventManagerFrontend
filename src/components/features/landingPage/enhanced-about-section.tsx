@@ -119,15 +119,13 @@ export default function EnhancedAboutSection() {
           </motion.p>
         </div>
 
-        {/* Updated grid layout with better responsive behavior */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 items-center max-w-7xl mx-auto">
-          {/* Image container with fixed aspect ratio */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="w-full h-full flex items-center justify-center" // Added flex and alignment classes
+            className="w-full h-full flex items-center justify-center"
           >
             <div className="relative aspect-[16/10] rounded-xl shadow-lg overflow-hidden w-full">
               <img
@@ -139,7 +137,6 @@ export default function EnhancedAboutSection() {
             </div>
           </motion.div>
 
-          {/* Text content with consistent width */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -164,7 +161,6 @@ export default function EnhancedAboutSection() {
           </motion.div>
         </div>
 
-        {/* Features grid with consistent spacing */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {features.map((feature, index) => (
             <FeatureCard

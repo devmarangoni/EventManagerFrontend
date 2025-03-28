@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/auth/UseAuth"
 import { useNavigate, NavLink } from "react-router-dom"
 import { toast } from "sonner"
-import { Home, Calendar, Users, LogOut, User, Settings, Sun, Moon, Monitor, Menu, X } from "lucide-react"
+import { Home, Calendar, Users, LogOut, User, Sun, Moon, Monitor, Menu, X } from "lucide-react"
 import { useState, useEffect } from "react"
 import {
   DropdownMenu,
@@ -206,10 +206,6 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
               <User className="mr-2 h-4 w-4" />
               Perfil
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate("/settings")}>
-              <Settings className="mr-2 h-4 w-4" />
-              Configurações
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Tema</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => setTheme("light")}>
@@ -241,7 +237,6 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
 
     return (
       <>
-        {/* Barra lateral fixa com ícones */}
         <div className="lg:hidden fixed left-0 top-0 bottom-0 w-[60px] border-r bg-background flex flex-col items-center justify-between z-40">
           <div className="pt-4">
             <Sheet>
@@ -286,10 +281,6 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
                   <User className="mr-2 h-4 w-4" />
                   Perfil
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate("/settings")}>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Configurações
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/logout")} className="text-red-500 focus:text-red-500">
                   <LogOut className="mr-2 h-4 w-4" />
@@ -300,7 +291,6 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
           </div>
         </div>
 
-        {/* Espaçador para compensar a largura da barra lateral fixa */}
         <div className="lg:hidden w-[60px] flex-shrink-0"></div>
       </>
     )
@@ -308,10 +298,8 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
 
   return (
     <>
-      {/* Mobile Sidebar */}
       <MobileSidebar />
 
-      {/* Desktop Sidebar */}
       <aside
         className={cn(
           "hidden lg:block border-r h-screen sticky top-0",

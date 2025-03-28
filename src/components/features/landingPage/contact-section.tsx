@@ -11,7 +11,6 @@ import { Textarea } from "../../ui/textarea"
 import { cn } from "../../../lib/utils"
 import { useTheme } from "@/context/theme/ThemeContext"
 
-// Floating label input inspired by Aceternity UI
 const FloatingLabelInput = ({
   id,
   label,
@@ -116,7 +115,6 @@ export default function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitted(true)
     }, 1000)

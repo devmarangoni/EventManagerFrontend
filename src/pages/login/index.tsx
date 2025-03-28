@@ -32,12 +32,9 @@ export default function LoginPage() {
   const loginImage = partyImages[4] || "/placeholder.svg"
 
   useEffect(() => {
-    // Verifica se o usuário já está autenticado
     if (auth.isAuthenticated) {
-      // Redireciona para a página home
       navigate("/home")
 
-      // Opcional: exibe uma mensagem informando o redirecionamento
       toast.info("Você já está autenticado", {
         description: "Redirecionando para a página inicial...",
       })
@@ -97,7 +94,6 @@ export default function LoginPage() {
         isDark ? "bg-gray-900" : "bg-gray-50",
       )}
     >
-      {/* Adicionar o componente Toaster */}
       <Toaster
         position="top-center"
         toastOptions={{
@@ -109,7 +105,6 @@ export default function LoginPage() {
         }}
       />
 
-      {/* Imagem lateral (visível apenas em telas maiores) */}
       <div className="hidden md:block md:w-1/2 lg:w-2/3 relative">
         <img
           src={loginImage || "/placeholder.svg"}
@@ -119,7 +114,6 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-500/20 mix-blend-multiply" />
       </div>
 
-      {/* Formulário de login */}
       <div
         className={cn(
           "w-full md:w-1/2 lg:w-1/3 flex items-center justify-center p-8 transition-colors duration-300",

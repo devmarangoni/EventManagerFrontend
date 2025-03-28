@@ -18,21 +18,15 @@ interface ChartData {
   value: number
 }
 
-// Remova o código de carregamento existente, pois agora usamos esqueletos no componente pai
 export function RevenueChart({ events, timeFilter, isLoading }: RevenueChartProps) {
   const [chartData, setChartData] = useState<ChartData[]>([])
   const { theme } = useTheme()
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
   useEffect(() => {
-    // Não precisamos verificar isLoading aqui, pois o componente pai já lida com isso
-
-    // Include all events, not just confirmed ones
-    // We'll filter by isBudget later if needed
     const relevantEvents = events
 
     if (timeFilter === "monthly") {
-      // Group by day of month
       const now = new Date()
       const currentMonth = now.getMonth()
       const currentYear = now.getFullYear()
@@ -56,7 +50,6 @@ export function RevenueChart({ events, timeFilter, isLoading }: RevenueChartProp
 
       setChartData(data)
     } else if (timeFilter === "quarterly") {
-      // Group by month in quarter
       const now = new Date()
       const currentQuarter = Math.floor(now.getMonth() / 3)
       const currentYear = now.getFullYear()
@@ -85,7 +78,6 @@ export function RevenueChart({ events, timeFilter, isLoading }: RevenueChartProp
 
       setChartData(data)
     } else if (timeFilter === "yearly") {
-      // Group by month in year
       const now = new Date()
       const currentYear = now.getFullYear()
 
@@ -105,7 +97,6 @@ export function RevenueChart({ events, timeFilter, isLoading }: RevenueChartProp
 
       setChartData(data)
     } else {
-      // All time - group by year
       const years = new Set<number>()
       relevantEvents.forEach((event) => {
         if (!event.schedule?.eventDateTime) return

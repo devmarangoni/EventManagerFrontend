@@ -14,7 +14,6 @@ interface GalleryImage {
   category: string
 }
 
-// Carousel component inspired by Aceternity UI
 const ImageCarousel = ({ images }: { images: GalleryImage[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -225,7 +224,6 @@ export default function EnhancedGallerySection() {
           <ImageCarousel images={filteredImages} />
         )}
 
-        {/* Lightbox */}
         {selectedImage && (
           <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
             <div className="relative max-w-4xl w-full">

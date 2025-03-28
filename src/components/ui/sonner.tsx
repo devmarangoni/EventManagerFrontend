@@ -6,7 +6,6 @@ import { useTheme } from "@/context/theme/ThemeContext"
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme } = useTheme()
 
-  // Mapeia nosso tema para o formato que o Sonner espera
   const sonnerTheme = theme === "system" ? "system" : theme === "dark" ? "dark" : "light"
 
   return (

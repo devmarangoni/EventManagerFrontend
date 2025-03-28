@@ -7,8 +7,11 @@ export async function uploadToCloudinary(
   imageData: string | File,
 ): Promise<Response<ImageUploadResponseDto | ErrorResponseDto>> {
   try {
+    const cloudinaryUploadPreset:string | undefined = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
+    const cloudinaryApiUrl:string | undefined = process.env.REACT_APP_CLOUDINARY_API_URL;
+
     const formData = new FormData();
-    formData.append("upload_preset", "MairaGasparini");
+    formData.append("upload_preset", cloudinaryUploadPreset as string);
 
     if(typeof imageData === "string" && imageData.startsWith("data:")){
       formData.append("file", imageData);
@@ -18,7 +21,7 @@ export async function uploadToCloudinary(
       throw new Error("Formato de imagem inválido");
     }
 
-    const response = await axios.post(`https://api.cloudinary.com/v1_1/dhkqo27jd/image/upload`, formData);
+    const response = await axios.post(cloudinaryApiUrl as string, formData);
 
     if(response.status === 200){
       return new Response<ImageUploadResponseDto>({

@@ -46,7 +46,7 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
     email: customer.email,
     mobile: customer.mobile,
     phone: customer.phone || "",
-    description: customer.description || "", // Adicionado campo de descrição
+    description: customer.description || "",
   })
   const [events, setEvents] = useState<EventModel[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -65,17 +65,15 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
       email: customer.email,
       mobile: customer.mobile,
       phone: customer.phone || "",
-      description: customer.description || "", // Atualizar descrição quando o cliente mudar
+      description: customer.description || "",
     })
     setIsEditing(false)
-    setEvents([]) // Clear events before fetching new ones
+    setEvents([])
     fetchCustomerEvents()
   }, [customer])
 
   useEffect(() => {
-    // Scroll to details on mobile
     if (window.innerWidth < 1024) {
-      // lg breakpoint
       detailsRef.current?.scrollIntoView({ behavior: "smooth" })
     }
   }, [customer])
@@ -107,7 +105,6 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
   const handleSave = async () => {
     if (!auth.token) return
 
-    // Validate form
     if (!formData.name.trim() || !formData.email.trim() || !formData.mobile.trim()) {
       toast.error("Campos obrigatórios", {
         description: "Nome, email e celular são obrigatórios.",
@@ -165,13 +162,12 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
       email: customer.email,
       mobile: customer.mobile,
       phone: customer.phone || "",
-      description: customer.description || "", // Resetar descrição também
+      description: customer.description || "",
     })
     setIsEditing(false)
   }
 
   const handleEventClick = (event: EventModel) => {
-    // Only allow editing budget events that are not finished
     if (!event.isBudget && !event.finished) {
       toast.info("Este evento não pode ser editado", {
         description: "Apenas orçamentos não finalizados podem ser editados.",
@@ -197,7 +193,6 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
   const handleFinishEvent = async (event: EventModel) => {
     if (!auth.token) return
 
-    // Only allow finalizing confirmed events (not budgets)
     if (event.isBudget) {
       toast.error("Não é possível finalizar um orçamento", {
         description: "Confirme o orçamento antes de finalizar o evento.",
@@ -215,7 +210,7 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
 
       if (response.success) {
         toast.success("Evento finalizado com sucesso")
-        fetchCustomerEvents() // Refresh the events list
+        fetchCustomerEvents()
       } else {
         throw new Error(response.message)
       }
@@ -233,14 +228,14 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
     try {
       const updatedEvent: EventRecordDto = {
         ...event,
-        isBudget: false, // Set to false to confirm the event
+        isBudget: false,
       }
 
       const response = await updateEventService(updatedEvent, auth.token)
 
       if (response.success) {
         toast.success("Evento confirmado com sucesso")
-        fetchCustomerEvents() // Refresh the events list
+        fetchCustomerEvents()
       } else {
         throw new Error(response.message)
       }
@@ -252,13 +247,9 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
     }
   }
 
-  // Função para abrir o WhatsApp
   const openWhatsApp = () => {
-    // Formatar o número de telefone (remover caracteres não numéricos)
     const formattedMobile = customer.mobile.replace(/\D/g, "")
-    // Criar a URL do WhatsApp
     const whatsappUrl = `https://wa.me/${formattedMobile}?text=Olá ${encodeURIComponent(customer.name)}`
-    // Abrir em uma nova aba
     window.open(whatsappUrl, "_blank")
   }
 
@@ -270,7 +261,6 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
             <CardTitle className="text-xl -ml-2 mb-3">Detalhes do Cliente</CardTitle>
 
             <div className="flex flex-wrap gap-2">
-              {/* Botão do WhatsApp - com fundo verde e ícone branco */}
               <Button
                 variant="outline"
                 size="sm"
@@ -411,7 +401,6 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
                   )}
                 </div>
 
-                {/* Campo de descrição */}
                 <div className="grid gap-2">
                   <Label htmlFor="description" className="flex items-center gap-2">
                     <User className="h-4 w-4 text-muted-foreground" /> Descrição
@@ -474,9 +463,7 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
                             : "border-l-4 border-l-purple-500",
                       )}
                     >
-                      {/* Action Buttons Row */}
                       <div className="flex justify-end gap-2 mb-2">
-                        {/* Only show Confirm button for budget events that are not finished */}
                         {event.isBudget && !event.finished && (
                           <Button
                             size="sm"
@@ -491,7 +478,6 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
                             Confirmar
                           </Button>
                         )}
-                        {/* Only show Finalize button for confirmed events (not budgets) that are not finished */}
                         {!event.isBudget && !event.finished && (
                           <Button
                             size="sm"
@@ -508,7 +494,6 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
                         )}
                       </div>
 
-                      {/* Event Header */}
                       <div className="flex justify-between items-center mb-2">
                         <h4 className="font-medium">{event.theme}</h4>
                         <span
@@ -525,15 +510,12 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
                         </span>
                       </div>
 
-                      {/* Event Details */}
                       <div
                         className={cn("cursor-pointer", event.isBudget && !event.finished && "hover:opacity-80")}
                         onClick={() => {
-                          // Only allow clicking if it's a budget and not finished
                           if (event.isBudget && !event.finished) {
                             handleEventClick(event)
                           } else {
-                            // Just show the event details in read-only mode
                             setSelectedEvent(event)
                             setIsEventModalOpen(true)
                           }
@@ -561,7 +543,6 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
         </CardContent>
       </Card>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -591,19 +572,16 @@ export function CustomerDetails({ customer, onUpdate, onDelete }: CustomerDetail
         </DialogContent>
       </Dialog>
 
-      {/* Event Modal - Updated to handle both new and existing events */}
       <EventModal
         open={isEventModalOpen}
         onOpenChange={setIsEventModalOpen}
         date={selectedEvent?.schedule?.eventDateTime ? new Date(selectedEvent.schedule.eventDateTime) : new Date()}
         event={selectedEvent}
-        customer={customer} // Always pass the current customer
+        customer={customer}
         onEventCreated={(updatedEvent) => {
-          // If the event was deleted (null returned), remove it from the list
           if (!updatedEvent) {
             setEvents(events.filter((e) => e.eventId !== selectedEvent?.eventId))
           } else {
-            // Otherwise refresh the events list
             fetchCustomerEvents()
           }
           setIsEventModalOpen(false)

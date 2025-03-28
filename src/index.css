@@ -41,15 +41,15 @@
 }
 
 .dark {
-  --background: hsl(222, 47%, 11%); /* Softer navy blue background */
+  --background: hsl(222, 47%, 11%);
   --foreground: oklch(0.985 0 0);
-  --card: hsl(222, 47%, 13%); /* Slightly lighter than background */
+  --card: hsl(222, 47%, 13%);
   --card-foreground: oklch(0.985 0 0);
   --popover: hsl(222, 47%, 11%);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.985 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: hsl(222, 47%, 15%); /* Lighter accent for secondary elements */
+  --secondary: hsl(222, 47%, 15%);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: hsl(222, 47%, 15%);
   --muted-foreground: oklch(0.708 0 0);

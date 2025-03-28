@@ -45,7 +45,6 @@ export default function EnhancedLayout({ children }: { children: React.ReactNode
         isDark ? "bg-gray-900" : "bg-gradient-to-b from-white to-purple-50",
       )}
     >
-      {/* Header/Navigation */}
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
@@ -65,7 +64,6 @@ export default function EnhancedLayout({ children }: { children: React.ReactNode
             Maira Gasparini
           </a>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {navItems.map((item) => (
               <a
@@ -79,13 +77,11 @@ export default function EnhancedLayout({ children }: { children: React.ReactNode
                 {item.label}
               </a>
             ))}
-            {/* Botão de toggle na navegação desktop */}
             <div className="ml-4">
               <ThemeToggle />
             </div>
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
             className={cn(
               "md:hidden",
@@ -97,7 +93,6 @@ export default function EnhancedLayout({ children }: { children: React.ReactNode
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -119,7 +114,6 @@ export default function EnhancedLayout({ children }: { children: React.ReactNode
                   {item.label}
                 </a>
               ))}
-              {/* Botão de toggle na navegação mobile */}
               <div className="flex justify-center py-2">
                 <ThemeToggle />
               </div>
@@ -128,10 +122,8 @@ export default function EnhancedLayout({ children }: { children: React.ReactNode
         )}
       </header>
 
-      {/* Main Content */}
       <main>{children}</main>
 
-      {/* Footer */}
       <footer className={cn("text-white pt-16 pb-8", isDark ? "bg-gray-950" : "bg-gray-900")}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">

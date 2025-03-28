@@ -27,7 +27,7 @@ export function AddCustomerModal({ open, onOpenChange, onCustomerAdded }: AddCus
     email: "",
     mobile: "",
     phone: "",
-    description: "", // Adicionado campo de descrição
+    description: "",
   })
   const [isLoading, setIsLoading] = useState(false)
   const { auth } = useAuth()
@@ -42,7 +42,6 @@ export function AddCustomerModal({ open, onOpenChange, onCustomerAdded }: AddCus
 
     if (!auth.token) return
 
-    // Validate form
     if (!formData.name.trim() || !formData.email.trim() || !formData.mobile.trim()) {
       toast.error("Campos obrigatórios", {
         description: "Nome, email e celular são obrigatórios.",
@@ -78,7 +77,7 @@ export function AddCustomerModal({ open, onOpenChange, onCustomerAdded }: AddCus
       email: "",
       mobile: "",
       phone: "",
-      description: "", // Resetar descrição também
+      description: "",
     })
   }
 
@@ -154,7 +153,6 @@ export function AddCustomerModal({ open, onOpenChange, onCustomerAdded }: AddCus
               />
             </div>
 
-            {/* Novo campo de descrição */}
             <div className="grid gap-2">
               <Label htmlFor="description">Descrição (opcional)</Label>
               <Textarea

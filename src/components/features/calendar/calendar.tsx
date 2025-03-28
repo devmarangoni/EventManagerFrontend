@@ -58,7 +58,6 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
   }
 
   function getEventsForDate(date: Date): EventModel[] {
-    // First check if the date is in the current month
     if (date.getMonth() !== currentMonth) {
       return []
     }
@@ -86,27 +85,21 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
   }
 
   function handleSelectDate(date: Date, event?: EventModel) {
-    // Allow clicking on past dates if there's a finished event
     const isPastDate = date < new Date(today.setHours(0, 0, 0, 0))
 
     if (event) {
-      // If there's an event, check if it's editable (budget and not finished)
       if (!event.isBudget && !event.finished) {
-        // For confirmed events that are not finished, show them but don't allow editing
         onSelectDate?.(date, event)
         return
       } else if (event.finished) {
-        // For finished events, just show them
         onSelectDate?.(date, event)
         return
       } else {
-        // For budget events, allow editing
         onSelectDate?.(date, event)
         return
       }
     }
 
-    // For dates without events
     if (!isPastDate) {
       onSelectDate?.(date)
     }
@@ -114,7 +107,6 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
 
   return (
     <div className="p-4">
-      {/* Calendar Header */}
       <div className="flex flex-col gap-4 mb-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <h2 className="text-2xl font-bold text-primary">
@@ -150,15 +142,12 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
           </div>
         </div>
 
-        {/* Legend */}
         <EventLegend isDark={isDark} />
       </div>
 
-      {/* Calendar Grid */}
       <div className="overflow-x-auto pb-4 sm:overflow-x-visible">
         <div className="min-w-[600px] sm:min-w-0">
           <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden shadow-lg">
-            {/* Week day headers */}
             {daysOfWeekShort.map((day, i) => (
               <div
                 key={`day-header-${i}`}
@@ -173,7 +162,6 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
               </div>
             ))}
 
-            {/* Calendar days */}
             {days.map(({ dayNumber, isCurrentMonth, date, events, isPastDate }, i) => {
               const isToday = isSameDay(new Date(), date)
 
@@ -195,7 +183,6 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
                   )}
                   onClick={() => isCurrentMonth && handleSelectDate(date, events[0])}
                 >
-                  {/* Day number */}
                   <span
                     className={cn(
                       "absolute top-1 left-1 flex h-6 w-6 items-center justify-center rounded-full text-sm",
@@ -207,7 +194,6 @@ export function Calendar({ events = [], onSelectDate }: CalendarProps) {
                     {dayNumber > 0 && dayNumber <= daysInMonth ? dayNumber : ""}
                   </span>
 
-                  {/* Events */}
                   <div className="absolute inset-x-1 top-8 bottom-1 space-y-1">
                     {events.map((event) => (
                       <motion.div

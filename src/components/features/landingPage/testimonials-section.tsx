@@ -103,7 +103,7 @@ export default function TestimonialsSection() {
           <div className="relative z-10">
             <div className="min-h-[400px] md:min-h-[300px] relative">
               {" "}
-              {/* Adjusted minimum heights */}
+              { Adjusted minimum heights */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}

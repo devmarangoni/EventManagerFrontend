@@ -50,7 +50,7 @@ const requiredFields = {
   theme: "Tema",
   birthdayPerson: "Aniversariante",
   eventDateTime: "Data e Hora",
-  value: "Preço", // Add price field
+  value: "Preço",
 } as const
 
 const INITIAL_EVENT: EventRecordDto = {
@@ -90,7 +90,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
     events: [],
   })
 
-  // Check if event is editable (budget and not finished)
   const isEditable = !event || (event.isBudget && !event.finished)
 
   const fetchCustomers = async () => {
@@ -108,7 +107,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
   useEffect(() => {
     if (open) {
       if (event) {
-        // Editing existing event
         setFormData(event)
         if (event.schedule) {
           setScheduleData({
@@ -122,7 +120,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
           })
         }
       } else {
-        // Creating new event
         setFormData({
           ...INITIAL_EVENT,
           customer: customer || INITIAL_EVENT.customer,
@@ -133,11 +130,10 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
         })
       }
 
-      // Only fetch customers if we don't have a specific customer
       if (!customer) {
         fetchCustomers()
       } else {
-        setCustomers([customer]) // Set the customer as the only option
+        setCustomers([customer])
       }
     } else {
       setCurrentError(null)
@@ -181,7 +177,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
     e.preventDefault()
     console.log("Form submitted", { formData, scheduleData })
 
-    // Don't allow editing if not editable
     if (!isEditable) {
       toast.error("Este evento não pode ser editado", {
         description: "Apenas orçamentos não finalizados podem ser editados.",
@@ -209,7 +204,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
 
       console.log("Submitting event", event?.eventId ? "update" : "create")
 
-      // Create or update event
       const eventResponse = event?.eventId
         ? await updateEventService(formData, auth.token)
         : await createEventService(formData, auth.token)
@@ -220,7 +214,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
         const updatedEvent = eventResponse.data as EventModel
 
         if (!event?.eventId) {
-          // Creating a new event
           const schedulePayload: ScheduleRecordDto = {
             eventDateTime: formatToScheduleObjTime(scheduleData.eventDateTime as Date),
             events: [updatedEvent.eventId],
@@ -243,8 +236,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
             throw new Error(scheduleResponse.message)
           }
         } else {
-          // Updating an existing event
-          // Keep the original schedule
           const finalEvent: EventModel = {
             ...updatedEvent,
             schedule: event.schedule,
@@ -306,7 +297,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
       return
     }
 
-    // Check if the event is a budget and not finished
     if (!event.isBudget || event.finished) {
       toast.error("Não é possível excluir este evento", {
         description: "Apenas orçamentos não finalizados podem ser excluídos.",
@@ -322,7 +312,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
       if (response.success) {
         toast.success("Evento excluído com sucesso")
         onOpenChange(false)
-        // If there's a callback for event creation/update, call it to refresh the list
         onEventCreated?.(event)
       } else {
         throw new Error(response.message)
@@ -353,7 +342,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
           </DialogTitle>
         </DialogHeader>
 
-        {/* Wrap the form in a scrollable div */}
         <div className="flex-1 overflow-y-auto pr-2">
           <form id="eventForm" onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 py-4">
             <div className="grid gap-3 sm:gap-4">
@@ -371,7 +359,7 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
                       handleFieldChange("customer", selectedCustomer)
                     }
                   }}
-                  disabled={!!customer || !isEditable} // Disable if customer is provided or not editable
+                  disabled={!!customer || !isEditable}
                 >
                   <SelectTrigger id="customer" className="h-9 sm:h-10 text-sm">
                     <SelectValue placeholder="Selecione o cliente" />
@@ -472,7 +460,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
                 />
               </div>
 
-              {/* Add price field */}
               <div className="grid gap-2 relative">
                 <Label htmlFor="value" className="text-sm flex items-center gap-1">
                   Preço
@@ -521,9 +508,7 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
           </form>
         </div>
 
-        {/* Footer stays at bottom */}
         <div className="flex justify-between items-center gap-4 pt-4 border-t mt-4">
-          {/* Only show delete button for budget events that are not finished */}
           {event?.eventId && event.isBudget && !event.finished && (
             <Button
               type="button"
@@ -538,7 +523,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="h-9 sm:h-10 text-sm">
               {!isEditable ? "Fechar" : "Cancelar"}
             </Button>
-            {/* Only show submit button if event is editable */}
             {isEditable && (
               <Button
                 form="eventForm"

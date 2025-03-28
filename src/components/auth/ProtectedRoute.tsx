@@ -11,16 +11,14 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const navigate = useNavigate()
-  const { auth, validatingToken } = useAuth() // Removemos o logout daqui
-  const redirectedRef = useRef(false) // Referência para controlar se já redirecionamos
+  const { auth, validatingToken } = useAuth()
+  const redirectedRef = useRef(false)
 
   useEffect(() => {
-    // Se ainda estiver validando o token, não faz nada
     if (validatingToken) return
 
-    // Se não estiver autenticado e ainda não redirecionamos, redireciona para o login
     if (!auth.isAuthenticated && !redirectedRef.current) {
-      redirectedRef.current = true // Marca que já redirecionamos
+      redirectedRef.current = true
       toast.error("Acesso negado", {
         description: "Você precisa estar logado para acessar esta página.",
       })
@@ -28,7 +26,6 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [auth.isAuthenticated, validatingToken, navigate])
 
-  // Enquanto estiver validando o token, mostra um spinner
   if (validatingToken) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -37,11 +34,9 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     )
   }
 
-  // Se não estiver autenticado, não renderiza nada (o useEffect já vai redirecionar)
   if (!auth.isAuthenticated) {
     return null
   }
 
-  // Se estiver autenticado, renderiza os filhos
   return <>{children}</>
 }

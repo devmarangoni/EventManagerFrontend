@@ -15,7 +15,6 @@ body {
     background-size: 200% 200%;
   }
 
-  /* Estilização da barra de rolagem */
   .scrollbar-thin {
     scrollbar-width: thin;
     scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
@@ -55,7 +54,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Estilos específicos para o modo escuro */
 .dark body {
   background-color: #121212;
   color: #f5f5f5;
@@ -98,7 +96,6 @@ html {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilos adicionais para o modo escuro */
 .dark .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, #121212, #1a1a1a);
 }

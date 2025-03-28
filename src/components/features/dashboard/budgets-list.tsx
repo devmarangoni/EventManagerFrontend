@@ -31,7 +31,7 @@ export function BudgetsList({ budgets, isLoading, onBudgetConfirmed }: BudgetsLi
 
       const updatedEvent: EventRecordDto = {
         ...budget,
-        isBudget: false, // Set to false to confirm the event
+        isBudget: false,
       }
 
       const response = await updateEventService(updatedEvent, auth.token)

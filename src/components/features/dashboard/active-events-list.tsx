@@ -31,7 +31,6 @@ export function ActiveEventsList({ events, isLoading, onEventFinished }: ActiveE
 
     setProcessingId(event.eventId as string)
     try {
-      // Criando o objeto de atualização com base no EventRecordDto
       const updateData = {
         eventId: event.eventId,
         length: event.length,
@@ -41,7 +40,7 @@ export function ActiveEventsList({ events, isLoading, onEventFinished }: ActiveE
         description: event.description || "",
         value: event.value,
         isBudget: event.isBudget,
-        finished: true, // Marcando como finalizado
+        finished: true,
         customer: event.customer,
         schedule: event.schedule,
       }

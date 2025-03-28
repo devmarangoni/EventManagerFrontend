@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react"
 import { motion } from "framer-motion"
-// Importe o hook useTheme do nosso contexto personalizado
 import { useTheme } from "@/context/theme/ThemeContext"
 
 interface Particle {
@@ -19,7 +18,6 @@ export function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const particles = useRef<Particle[]>([])
   const animationFrameId = useRef<number>(0)
-  // Use o hook useTheme do nosso contexto personalizado
   const { theme } = useTheme()
 
   useEffect(() => {
@@ -40,7 +38,6 @@ export function ParticleBackground() {
       const particleCount = Math.min(Math.floor(window.innerWidth / 10), 100)
 
       for (let i = 0; i < particleCount; i++) {
-        // Modifique a função initParticles para usar cores diferentes com base no tema
         const colors =
           theme === "dark"
             ? ["rgba(168, 85, 247, 0.3)", "rgba(236, 72, 153, 0.3)", "rgba(255, 255, 255, 0.15)"]
@@ -68,11 +65,9 @@ export function ParticleBackground() {
         ctx.globalAlpha = particle.opacity
         ctx.fill()
 
-        // Update position
         particle.x += particle.speedX
         particle.y += particle.speedY
 
-        // Wrap around edges
         if (particle.x < 0) particle.x = canvas.width
         if (particle.x > canvas.width) particle.x = 0
         if (particle.y < 0) particle.y = canvas.height
@@ -92,7 +87,7 @@ export function ParticleBackground() {
         cancelAnimationFrame(animationFrameId.current)
       }
     }
-  }, [theme]) // Adicione theme como dependência para recriar as partículas quando o tema mudar
+  }, [theme])
 
   return (
     <motion.canvas

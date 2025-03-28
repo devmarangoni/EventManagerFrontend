@@ -95,7 +95,6 @@ export default function CustomersPage() {
     <DashboardLayout>
       <ErrorBoundary>
         <div className="flex flex-col">
-          {/* Fixed header section */}
           <div className="flex-none space-y-4 mb-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex-1">
@@ -132,7 +131,6 @@ export default function CustomersPage() {
             </div>
           </div>
 
-          {/* Scrollable content area */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div
               className={cn(

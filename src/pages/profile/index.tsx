@@ -16,7 +16,6 @@ import { useTheme } from "@/context/theme/ThemeContext"
 import { Camera, Check, Eye, EyeOff, Loader2, User, X } from "lucide-react"
 import type UserRecordDto from "@/types/dtos/userRecordDto"
 import updateUserService from "@/services/user/updateUserService"
-// Importar o serviço do Cloudinary
 import { uploadToCloudinary } from "@/services/storage/cloudinaryService"
 
 export default function ProfilePage() {
@@ -65,7 +64,6 @@ export default function ProfilePage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      // Verificar o tamanho do arquivo (limite de 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("Arquivo muito grande", {
           description: "O tamanho máximo permitido é 5MB",
@@ -73,7 +71,6 @@ export default function ProfilePage() {
         return
       }
 
-      // Apenas para preview local
       const reader = new FileReader()
       reader.onloadend = () => {
         const base64String = reader.result as string
@@ -81,7 +78,6 @@ export default function ProfilePage() {
       }
       reader.readAsDataURL(file)
 
-      // Armazenar o arquivo para upload posterior
       setPhotoFile(file)
     }
   }
@@ -93,7 +89,6 @@ export default function ProfilePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validate form
     if (!formData.username.trim()) {
       toast.error("Nome de usuário é obrigatório")
       return
@@ -114,7 +109,6 @@ export default function ProfilePage() {
     try {
       let photoUrl = formData.photo
 
-      // Se tiver um arquivo de foto para upload
       if (photoFile) {
         setIsUploading(true)
         toast.info("Enviando imagem...")
@@ -122,30 +116,26 @@ export default function ProfilePage() {
         const uploadResponse = await uploadToCloudinary(photoFile)
 
         if (uploadResponse.success && uploadResponse.data && "url" in uploadResponse.data) {
-          // Usar a URL retornada pelo Cloudinary
           photoUrl = uploadResponse.data.url
           toast.success("Imagem enviada com sucesso!")
         } else {
           toast.error("Falha ao enviar imagem", {
             description: uploadResponse.message,
           })
-          // Continuar mesmo com falha no upload da imagem
         }
 
         setIsUploading(false)
       }
 
-      // Preparar dados para envio
       const dataToSubmit: UserRecordDto = {
         ...formData,
         password: formData.password || auth.user?.password || "",
-        photo: photoUrl, // Usar a URL da imagem do Cloudinary
+        photo: photoUrl,
       }
 
       const response = await updateUserService(dataToSubmit, auth.token || "")
 
       if (response.success && response.data) {
-        // Update the user in auth context
         if (auth.user) {
           const updatedUser = {
             ...auth.user,
@@ -154,7 +144,6 @@ export default function ProfilePage() {
             photo: photoUrl,
           }
 
-          // Re-login to update the auth context
           login(auth.token || "", updatedUser)
 
           toast.success("Perfil atualizado com sucesso!")
@@ -176,7 +165,6 @@ export default function ProfilePage() {
 
   const cancelEdit = () => {
     setIsEditing(false)
-    // Reset form data
     if (auth.user) {
       setFormData({
         userId: auth.user.userId,
@@ -200,7 +188,6 @@ export default function ProfilePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Profile Photo Card */}
           <Card className={cn("col-span-1 border", isDark ? "bg-gray-900/50" : "bg-white/50")}>
             <CardHeader>
               <CardTitle>Foto de Perfil</CardTitle>
@@ -271,7 +258,6 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          {/* Profile Info Card */}
           <Card className={cn("col-span-1 md:col-span-2 border", isDark ? "bg-gray-900/50" : "bg-white/50")}>
             <CardHeader>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">

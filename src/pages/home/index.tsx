@@ -17,9 +17,7 @@ import { BudgetsList } from "@/components/features/dashboard/budgets-list"
 import { RevenueChart } from "@/components/features/dashboard/revenue-chart"
 import { EventSizeChart } from "@/components/features/dashboard/event-size-chart"
 import { useTheme } from "@/context/theme/ThemeContext"
-// Adicione estes imports no topo do arquivo
 import { Skeleton } from "@/components/ui/skeleton"
-// Adicione o import do novo componente no topo do arquivo
 import { ActiveEventsList } from "@/components/features/dashboard/active-events-list"
 
 type TimeFilter = "monthly" | "quarterly" | "yearly" | "all"
@@ -42,15 +40,12 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      // Adicione um pequeno atraso para garantir que os esqueletos sejam exibidos
-      // Isso evita o "flash" de carregamento em conexões muito rápidas
       const loadingPromise = new Promise((resolve) => setTimeout(resolve, 300))
 
-      // Fetch schedules and customers in parallel
       const [schedulesResponse, customersResponse] = await Promise.all([
         getAllSchedulesService(auth.token as string),
         getAllCustomersService(auth.token as string),
-        loadingPromise, // Aguarde pelo menos 300ms para evitar flashes de carregamento
+        loadingPromise,
       ])
 
       if (schedulesResponse.success && schedulesResponse.data) {
@@ -85,15 +80,12 @@ export default function Home() {
     }
   }
 
-  // Calculate metrics
   const scheduledEvents = events.filter((event) => !event.isBudget && !event.finished).length
   const activeClients = customers.length
   const completedEvents = events.filter((event) => event.finished).length
   const pendingBudgets = events.filter((event) => event.isBudget && !event.finished).length
 
-  // Calculate expected gross profit based on time filter
   const calculateExpectedProfit = () => {
-    // Include all events for calculation
     const relevantEvents = events
 
     if (timeFilter === "all") {
@@ -129,7 +121,6 @@ export default function Home() {
 
   const expectedProfit = calculateExpectedProfit()
 
-  // Calculate events by size
   const eventsBySize = {
     P: events.filter((event) => event.length === "P").length,
     M: events.filter((event) => event.length === "M").length,
@@ -181,7 +172,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
             <Card key={stat.title} className="group transition-all hover:shadow-md hover:border-border/60">
@@ -214,9 +204,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Revenue Chart and Event Size Distribution - Side by Side */}
         <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
-          {/* Revenue Card with Time Filter */}
           <Card className="group transition-all hover:shadow-md hover:border-border/60">
             <CardHeader className="pb-2 space-y-0">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
@@ -278,7 +266,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Revenue Chart */}
               <div className="mt-6 h-[200px] w-full">
                 {isLoading ? (
                   <div className="w-full h-full flex items-center justify-center">
@@ -302,7 +289,6 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Event Size Distribution */}
           <Card className="group transition-all hover:shadow-md hover:border-border/60">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Distribuição por Tamanho</CardTitle>
@@ -335,9 +321,7 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Lists Section - 2 cards side by side */}
         <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
-          {/* Pending Budgets List */}
           <Card className="group transition-all hover:shadow-md hover:border-border/60">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Orçamentos Pendentes</CardTitle>
@@ -376,7 +360,6 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Active Events List */}
           <Card className="group transition-all hover:shadow-md hover:border-border/60">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Eventos em Andamento</CardTitle>

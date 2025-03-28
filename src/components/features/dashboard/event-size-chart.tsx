@@ -28,7 +28,6 @@ export function EventSizeChart({ eventsBySize, isLoading }: EventSizeChartProps)
     { name: "Grande", value: eventsBySize.G, color: "#EC4899" },
   ].filter((item) => item.value > 0)
 
-  // If there's no data, show a message
   if (data.length === 0 || data.every((item) => item.value === 0)) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center">

@@ -13,7 +13,6 @@ const Carousel3D = ({ images }: { images: string[] }) => {
   const [isLoaded, setIsLoaded] = useState<boolean[]>([])
 
   useEffect(() => {
-    // Initialize the loaded state array
     setIsLoaded(new Array(images.length).fill(false))
   }, [images.length])
 

@@ -24,7 +24,6 @@ export function getNumberOfDaysByMonth(month: number): number {
 }
 
 export function formatToDateTimeLocal(date: Date | string): string {
-  // Garantir que temos uma instância de Date
   const dateObj = typeof date === "string" ? new Date(date) : date
 
   const year = dateObj.getFullYear()
