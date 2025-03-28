@@ -10,14 +10,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist",
-    rollupOptions: {
-      output: {
-        entryFileNames: 'index.js',
-        chunkFileNames: 'index.js',
-        assetFileNames: 'index.css',
-      }
-    }
+    outDir: "dist"
   },
   preview: {
     headers: {
