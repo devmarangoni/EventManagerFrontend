@@ -60,10 +60,8 @@ export default function LoginPage() {
         password: password,
       }
 
-      console.log(loginTO)
-
       const { success, data } = await loginService(loginTO)
-      console.log(JSON.stringify(data))
+      
       if (success) {
         const { token, user } = data as LoginResponseDto
         login(token, user)

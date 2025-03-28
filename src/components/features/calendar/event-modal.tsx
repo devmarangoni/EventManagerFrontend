@@ -175,7 +175,6 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted", { formData, scheduleData })
 
     if (!isEditable) {
       toast.error("Este evento não pode ser editado", {
@@ -202,13 +201,9 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
         return
       }
 
-      console.log("Submitting event", event?.eventId ? "update" : "create")
-
       const eventResponse = event?.eventId
         ? await updateEventService(formData, auth.token)
         : await createEventService(formData, auth.token)
-
-      console.log("Event response", eventResponse)
 
       if (eventResponse.success && eventResponse.data) {
         const updatedEvent = eventResponse.data as EventModel
@@ -219,9 +214,7 @@ export function EventModal({ open, onOpenChange, date, event, customer, onEventC
             events: [updatedEvent.eventId],
           }
 
-          console.log("Creating schedule", schedulePayload)
           const scheduleResponse = await createScheduleService(schedulePayload, auth.token)
-          console.log("Schedule response", scheduleResponse)
 
           if (scheduleResponse.success) {
             const finalEvent: EventModel = {

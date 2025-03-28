@@ -48,7 +48,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
               token: credentials.token,
             }
             const { success } = await validateTokenService(validateTokenDto)
-            console.log(`Token é valido: ${success}`)
             if (success) {
               setAuth({
                 token: credentials.token,

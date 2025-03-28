@@ -44,7 +44,6 @@ export default function CalendarPage() {
             }
           })
 
-          console.log("Eventos carregados:", allEvents)
           setEvents(allEvents)
         }
       } catch (error) {

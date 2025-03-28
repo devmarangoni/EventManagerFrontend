@@ -60,7 +60,6 @@ export default function Home() {
           }
         })
 
-        console.log("Loaded events:", allEvents)
         setEvents(allEvents)
       }
 
