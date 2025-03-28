@@ -13,11 +13,10 @@ import updateEventService from "@/services/party/updateEventService"
 
 interface BudgetsListProps {
   budgets: EventModel[]
-  isLoading: boolean
   onBudgetConfirmed: () => void
 }
 
-export function BudgetsList({ budgets, isLoading, onBudgetConfirmed }: BudgetsListProps) {
+export function BudgetsList({ budgets, onBudgetConfirmed }: BudgetsListProps) {
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
   const { theme } = useTheme()
   const { auth } = useAuth()

@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useTheme } from "@/context/theme/ThemeContext"
 
 interface Balloon {
   x: number
@@ -21,7 +20,6 @@ export function FloatingBalloons() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const balloons = useRef<Balloon[]>([])
   const animationFrameId = useRef<number>(0)
-  const { theme } = useTheme()
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
   const initBalloons = (width: number, height: number) => {

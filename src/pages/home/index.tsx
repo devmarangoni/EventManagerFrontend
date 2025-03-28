@@ -16,7 +16,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BudgetsList } from "@/components/features/dashboard/budgets-list"
 import { RevenueChart } from "@/components/features/dashboard/revenue-chart"
 import { EventSizeChart } from "@/components/features/dashboard/event-size-chart"
-import { useTheme } from "@/context/theme/ThemeContext"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ActiveEventsList } from "@/components/features/dashboard/active-events-list"
 
@@ -28,8 +27,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [timeFilter, setTimeFilter] = useState<TimeFilter>("monthly")
   const { auth } = useAuth()
-  const { theme } = useTheme()
-  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
   useEffect(() => {
     if (auth.token) {
@@ -314,7 +311,7 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
-                  <EventSizeChart eventsBySize={eventsBySize} isLoading={isLoading} />
+                  <EventSizeChart eventsBySize={eventsBySize} />
                 )}
               </div>
             </CardContent>
@@ -353,7 +350,6 @@ export default function Home() {
               ) : (
                 <BudgetsList
                   budgets={events.filter((event) => event.isBudget && !event.finished)}
-                  isLoading={isLoading}
                   onBudgetConfirmed={() => fetchData()}
                 />
               )}

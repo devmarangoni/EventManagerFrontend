@@ -23,7 +23,7 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const { auth, logout } = useAuth()
   const navigate = useNavigate()
   const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   useEffect(() => {

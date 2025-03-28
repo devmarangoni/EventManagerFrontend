@@ -9,7 +9,6 @@ interface EventSizeChartProps {
     M: number
     G: number
   }
-  isLoading: boolean
 }
 
 interface ChartData {
@@ -18,7 +17,7 @@ interface ChartData {
   color: string
 }
 
-export function EventSizeChart({ eventsBySize, isLoading }: EventSizeChartProps) {
+export function EventSizeChart({ eventsBySize }: EventSizeChartProps) {
   const { theme } = useTheme()
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
