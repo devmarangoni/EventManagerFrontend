@@ -1,6 +1,6 @@
 import axios from "axios"
+import { apiUrl } from "@/lib/ambientVariables";
 
-const apiUrl = process.env.REACT_APP_API_URL;
 console.log(`api url: ${apiUrl}`);
 
 const axiosHttp = axios.create({

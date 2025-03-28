@@ -25,7 +25,7 @@ export default function TestimonialsSection() {
       id: 1,
       name: "Ana Silva",
       role: "Mãe da Aniversariante",
-      image: "https://via.placeholder.com/100",
+      image: "",
       content:
         "A EventosMaira transformou a festa da minha filha em um sonho realizado. Cada detalhe foi cuidado com perfeição e o resultado superou todas as nossas expectativas. Recomendo de olhos fechados!",
       rating: 5,
@@ -34,7 +34,7 @@ export default function TestimonialsSection() {
       id: 2,
       name: "Carlos Mendes",
       role: "Pai do Aniversariante",
-      image: "https://via.placeholder.com/100",
+      image: "",
       content:
         "Contratamos para a festa do meu filho e foi um sucesso absoluto. Profissionalismo impecável, organização perfeita e atendimento excepcional. Já agendamos a próxima!",
       rating: 5,
@@ -43,7 +43,7 @@ export default function TestimonialsSection() {
       id: 3,
       name: "Juliana Costa",
       role: "Aniversariante",
-      image: "https://via.placeholder.com/100",
+      image: "",
       content:
         "Minha festa de 15 anos foi mágica! A equipe da EventosMaira cuidou de tudo com muito carinho e atenção. Todos os convidados elogiaram a decoração e o serviço.",
       rating: 5,
@@ -103,7 +103,6 @@ export default function TestimonialsSection() {
           <div className="relative z-10">
             <div className="min-h-[400px] md:min-h-[300px] relative">
               {" "}
-              { Adjusted minimum heights */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}

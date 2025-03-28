@@ -1,7 +1,7 @@
 {
-  "name": "my-app",
+  "name": "maira-gasparini",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -27,7 +27,7 @@
     "embla-carousel-react": "^8.5.2",
     "framer-motion": "^12.5.0",
     "lucide-react": "^0.479.0",
-    "my-app": "file:",
+    "maira-gasparini": "file:",
     "next-themes": "^0.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

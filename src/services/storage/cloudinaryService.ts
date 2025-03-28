@@ -2,14 +2,12 @@ import axios from "axios"
 import type ErrorResponseDto from "@/types/http/errorResponseDto"
 import Response from "@/types/http/response"
 import type ImageUploadResponseDto from "@/types/http/imageUploadResponseDto"
+import { cloudinaryApiUrl, cloudinaryUploadPreset } from "@/lib/ambientVariables";
 
 export async function uploadToCloudinary(
   imageData: string | File,
 ): Promise<Response<ImageUploadResponseDto | ErrorResponseDto>> {
   try {
-    const cloudinaryUploadPreset:string | undefined = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
-    const cloudinaryApiUrl:string | undefined = process.env.REACT_APP_CLOUDINARY_API_URL;
-
     const formData = new FormData();
     formData.append("upload_preset", cloudinaryUploadPreset as string);
 
