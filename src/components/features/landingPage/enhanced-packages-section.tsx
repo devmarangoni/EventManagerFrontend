@@ -55,7 +55,7 @@ const PackageCard = ({
             isActive ? "bg-white/20" : isDark ? "bg-gray-700" : "bg-purple-100",
           )}
         >
-          <img src={pkg.src || "/placeholder.svg"} alt={pkg.title} className="w-8 h-8 object-contain" />
+          <img src={pkg.src} alt={pkg.title} className="w-8 h-8 object-contain" />
         </div>
 
         <h3 className="text-xl font-bold mb-2">{pkg.title}</h3>

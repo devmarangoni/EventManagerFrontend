@@ -65,7 +65,7 @@ const ImageCarousel = ({ images }: { images: GalleryImage[] }) => {
             }}
           >
             <img
-              src={image.src || "/placeholder.svg"}
+              src={image.src}
               alt={image.alt}
               className="w-full h-full object-cover rounded-xl shadow-xl"
             />
@@ -213,7 +213,7 @@ export default function EnhancedGallerySection() {
                 style={{ height: `${Math.floor(Math.random() * 100) + 200}px` }}
               >
                 <img
-                  src={image.src || "/placeholder.svg"}
+                  src={image.src}
                   alt={image.alt}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                 />
@@ -234,7 +234,7 @@ export default function EnhancedGallerySection() {
                 <X size={24} />
               </button>
               <img
-                src={selectedImage.src || "/placeholder.svg"}
+                src={selectedImage.src}
                 alt={selectedImage.alt}
                 className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
               />

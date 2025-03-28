@@ -181,7 +181,7 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
               >
                 {auth?.user?.photo ? (
                   <img
-                    src={auth.user.photo || "/placeholder.svg"}
+                    src={auth.user.photo}
                     alt={auth.user.username}
                     className="w-full h-full object-cover"
                   />
@@ -264,7 +264,7 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
                   <div className="h-10 w-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-600/5 to-pink-500/5">
                     {auth?.user?.photo ? (
                       <img
-                        src={auth.user.photo || "/placeholder.svg"}
+                        src={auth.user.photo}
                         alt={auth.user.username}
                         className="w-full h-full object-cover"
                       />

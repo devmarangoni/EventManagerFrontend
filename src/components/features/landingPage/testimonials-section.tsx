@@ -121,7 +121,7 @@ export default function TestimonialsSection() {
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-6 h-full">
                       <div className="flex-shrink-0">
                         <img
-                          src={testimonials[activeIndex].image || "/placeholder.svg"}
+                          src={testimonials[activeIndex].image}
                           alt={testimonials[activeIndex].name}
                           className="w-20 h-20 rounded-full object-cover border-2 border-purple-400"
                         />

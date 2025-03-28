@@ -129,7 +129,7 @@ export default function EnhancedAboutSection() {
           >
             <div className="relative aspect-[16/10] rounded-xl shadow-lg overflow-hidden w-full">
               <img
-                src={partyImageUrls[7] || "/placeholder.svg"}
+                src={partyImageUrls[7]}
                 alt="Sobre Maira Gasparini"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"

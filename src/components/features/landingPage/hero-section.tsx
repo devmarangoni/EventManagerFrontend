@@ -75,7 +75,7 @@ const Carousel3D = ({ images }: { images: string[] }) => {
             }}
           >
             <img
-              src={image || "/placeholder.svg"}
+              src={image}
               alt={`Festa ${index + 1}`}
               className="w-full h-full object-cover rounded-xl shadow-xl"
               onLoad={() => handleImageLoad(index)}

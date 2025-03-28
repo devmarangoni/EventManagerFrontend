@@ -29,7 +29,7 @@ export default function LoginPage() {
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
   const partyImages = getPartyImages()
-  const loginImage = partyImages[4] || "/placeholder.svg"
+  const loginImage = partyImages[4]
 
   useEffect(() => {
     if (auth.isAuthenticated) {
@@ -107,7 +107,7 @@ export default function LoginPage() {
 
       <div className="hidden md:block md:w-1/2 lg:w-2/3 relative">
         <img
-          src={loginImage || "/placeholder.svg"}
+          src={loginImage}
           alt="Decoração de festa"
           className="absolute inset-0 h-full w-full object-cover"
         />

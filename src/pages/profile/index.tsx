@@ -204,7 +204,7 @@ export default function ProfilePage() {
                 >
                   {previewImage ? (
                     <img
-                      src={previewImage || "/placeholder.svg"}
+                      src={previewImage}
                       alt={formData.username}
                       className="w-full h-full object-cover"
                     />
