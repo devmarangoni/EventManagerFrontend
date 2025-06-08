@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import getAllSchedulesService from "@/services/schedule/getAllSchedulesService"
 import type EventModel from "@/types/models/eventModel"
 import type ScheduleModel from "@/types/models/scheduleModel"
+import deleteScheduleService from "@/services/schedule/deleteSchedule"
 
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -21,6 +22,7 @@ export default function CalendarPage() {
   const { auth } = useAuth()
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
+  // Carregar eventos do calendário
   useEffect(() => {
     const fetchEvents = async () => {
       if (!auth.token) return
@@ -36,6 +38,7 @@ export default function CalendarPage() {
           schedules.forEach((schedule) => {
             if (schedule.events && Array.isArray(schedule.events)) {
               schedule.events.forEach((event) => {
+                // Adiciona o schedule ao evento para que possamos mostrar no calendário
                 allEvents.push({
                   ...event,
                   schedule: schedule,
@@ -44,6 +47,7 @@ export default function CalendarPage() {
             }
           })
 
+          console.log("Eventos carregados:", allEvents)
           setEvents(allEvents)
         }
       } catch (error) {
@@ -65,9 +69,11 @@ export default function CalendarPage() {
   }
 
   const handleEventCreated = (newEvent: EventModel) => {
+    // Verificar se o evento já existe na lista
     const existingEventIndex = events.findIndex((e) => e.eventId === newEvent.eventId)
 
     if (existingEventIndex >= 0) {
+      // Se o evento já existe, atualize-o
       setEvents((prevEvents) => {
         const updatedEvents = [...prevEvents]
         updatedEvents[existingEventIndex] = newEvent
@@ -78,6 +84,7 @@ export default function CalendarPage() {
         description: `${newEvent.birthdayPerson} - ${new Date(newEvent.schedule?.eventDateTime || "").toLocaleDateString()}`,
       })
     } else {
+      // Se for um novo evento, adicione-o à lista
       if (newEvent.schedule) {
         setEvents((prevEvents) => [...prevEvents, newEvent])
         toast.success("Evento adicionado ao calendário", {
@@ -87,16 +94,35 @@ export default function CalendarPage() {
     }
   }
 
+  const handleDeleteEvent = async (eventToDelete: EventModel) => {
+    if (!auth.token || !eventToDelete.schedule?.scheduleId) return
+
+    try {
+      const response = await deleteScheduleService(eventToDelete.schedule.scheduleId, eventToDelete.eventId, auth.token)
+
+      if (response.success) {
+        // Remove o evento da lista local
+        setEvents((prevEvents) => prevEvents.filter((event) => event.eventId !== eventToDelete.eventId))
+
+        toast.success("Evento excluído", {
+          description: `${eventToDelete.birthdayPerson} foi removido do calendário.`,
+        })
+      } else {
+        throw new Error(response.message || "Erro ao excluir evento")
+      }
+    } catch (error) {
+      console.error("Erro ao excluir evento:", error)
+      toast.error("Erro ao excluir evento", {
+        description: "Não foi possível excluir o evento. Tente novamente.",
+      })
+    }
+  }
+
   return (
     <DashboardLayout>
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Calendário</h1>
-            <p className="text-muted-foreground">
-              Visualize e gerencie todos os seus eventos e orçamentos em um único lugar.
-            </p>
-          </div>
+          <h1 className="text-3xl font-bold tracking-tight">Calendário</h1>
         </div>
 
         <div
@@ -110,7 +136,7 @@ export default function CalendarPage() {
               <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : (
-            <Calendar events={events} onSelectDate={handleSelectDate} />
+            <Calendar events={events} onSelectDate={handleSelectDate} onDeleteEvent={handleDeleteEvent} />
           )}
         </div>
 
@@ -128,4 +154,3 @@ export default function CalendarPage() {
     </DashboardLayout>
   )
 }
-

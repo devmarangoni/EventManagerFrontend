@@ -153,7 +153,7 @@ export default function LoginPage() {
                   <Label htmlFor="password" className={isDark ? "text-gray-300" : "text-gray-700"}>
                     Senha
                   </Label>
-                  <a
+                  {/* <a
                     href="/forgot-password"
                     className={cn(
                       "text-sm hover:underline",
@@ -161,7 +161,7 @@ export default function LoginPage() {
                     )}
                   >
                     Esqueceu a senha?
-                  </a>
+                  </a> */}
                 </div>
                 <div className="relative">
                   <Input

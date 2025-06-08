@@ -4,13 +4,15 @@ import type React from "react"
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Send, Phone, Mail, MapPin, Check } from "lucide-react"
+import { Phone, Mail, MapPin, Check } from "lucide-react"
 import { Button } from "../../ui/button"
 import { Input } from "../../ui/input"
 import { Textarea } from "../../ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
 import { cn } from "../../../lib/utils"
 import { useTheme } from "@/context/theme/ThemeContext"
 
+// Floating label input inspired by Aceternity UI
 const FloatingLabelInput = ({
   id,
   label,
@@ -110,14 +112,62 @@ const FloatingLabelTextarea = ({
 
 export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    partySize: "",
+    description: "",
+  })
   const { theme } = useTheme()
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
 
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Validar campos obrigatórios
+    if (!formData.name.trim() || !formData.partySize || !formData.description.trim()) {
+      alert("Por favor, preencha todos os campos obrigatórios.")
+      return
+    }
+
+    // Montar a mensagem do WhatsApp
+    const sizeLabels = {
+      P: "Pequena",
+      M: "Média",
+      G: "Grande",
+    }
+
+    const sizeLabel = sizeLabels[formData.partySize as keyof typeof sizeLabels] || formData.partySize
+
+    const message = `Olá Maira Gasparini, gostaria de realizar um orçamento no nome de ${formData.name}, de uma festa tamanho ${sizeLabel} e a descrição: ${formData.description}.`
+
+    // Número do WhatsApp (pode ser configurado)
+    const whatsappNumber = "5519999216813" // Formato internacional
+
+    // Criar URL do WhatsApp
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+
+    // Abrir WhatsApp
+    window.open(whatsappUrl, "_blank")
+
+    // Mostrar confirmação
+    setIsSubmitted(true)
+
+    // Reset form após 3 segundos
     setTimeout(() => {
-      setIsSubmitted(true)
-    }, 1000)
+      setIsSubmitted(false)
+      setFormData({
+        name: "",
+        partySize: "",
+        description: "",
+      })
+    }, 3000)
   }
 
   return (
@@ -179,7 +229,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold mb-1">Telefone</h4>
-                    <p className={isDark ? "text-gray-400" : "text-gray-600"}>(11) 99999-9999</p>
+                    <p className={isDark ? "text-gray-400" : "text-gray-600"}>(19) 99921-6813</p>
                   </div>
                 </div>
 
@@ -240,33 +290,71 @@ export default function ContactSection() {
                 </div>
                 <h3 className="text-2xl font-bold mb-4">Mensagem Enviada!</h3>
                 <p className={cn("mb-6", isDark ? "text-gray-400" : "text-gray-600")}>
-                  Obrigado por entrar em contato conosco. Retornaremos em breve!
+                  Você será redirecionado para o WhatsApp. Aguarde nosso retorno!
                 </p>
-                <Button onClick={() => setIsSubmitted(false)} className="bg-purple-600 hover:bg-purple-700">
-                  Enviar Nova Mensagem
-                </Button>
               </div>
             ) : (
               <form
                 onSubmit={handleSubmit}
                 className={cn("rounded-xl shadow-xl p-8", isDark ? "bg-gray-900" : "bg-white")}
               >
-                <h3 className="text-2xl font-bold mb-6">Envie uma Mensagem</h3>
+                <h3 className="text-2xl font-bold mb-6">Solicitar Orçamento</h3>
 
                 <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FloatingLabelInput id="name" label="Nome" required isDark={isDark} />
-                    <FloatingLabelInput id="email" label="Email" type="email" required isDark={isDark} />
+                  <FloatingLabelInput
+                    id="name"
+                    label="Seu Nome"
+                    required
+                    isDark={isDark}
+                    value={formData.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
+                  />
+
+                  <div className="grid gap-2">
+                    <label className={cn("text-sm font-medium", isDark ? "text-gray-300" : "text-gray-700")}>
+                      Tamanho da Festa <span className="text-red-500">*</span>
+                    </label>
+                    <Select value={formData.partySize} onValueChange={(value) => handleInputChange("partySize", value)}>
+                      <SelectTrigger
+                        className={cn(
+                          "h-14",
+                          isDark ? "bg-gray-800 border-gray-700 text-white" : "bg-white border-gray-300",
+                        )}
+                      >
+                        <SelectValue placeholder="Selecione o tamanho da festa" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="P">Pequena - até 2,5 metros</SelectItem>
+                        <SelectItem value="M">Média - até 3,5 metros</SelectItem>
+                        <SelectItem value="G">Grande - personalizada</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
-                  <FloatingLabelInput id="subject" label="Assunto" required isDark={isDark} />
-                  <FloatingLabelTextarea id="message" label="Mensagem" required isDark={isDark} />
+                  <FloatingLabelTextarea
+                    id="description"
+                    label="Descrição da Festa"
+                    required
+                    isDark={isDark}
+                    value={formData.description}
+                    onChange={(e) => handleInputChange("description", e.target.value)}
+                  />
 
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 h-14 text-lg"
+                    className="w-full bg-[#25D366] hover:bg-[#128C7E] h-14 text-lg text-white border-0"
                   >
-                    <Send className="mr-2 h-5 w-5" /> Enviar Mensagem
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="mr-2"
+                    >
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    Enviar WhatsApp
                   </Button>
                 </div>
               </form>
@@ -277,4 +365,3 @@ export default function ContactSection() {
     </section>
   )
 }
-

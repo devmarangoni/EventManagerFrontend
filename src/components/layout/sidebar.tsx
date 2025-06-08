@@ -235,6 +235,19 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
     const { auth } = useAuth()
     const navigate = useNavigate()
 
+    const handleLogout = () => {
+        try {
+            logout()
+            toast.success("Logout realizado com sucesso")
+            navigate("/login")
+        } catch (error) {
+        console.error(error)
+            toast.error("Erro ao realizar logout", {
+                description: "Tente novamente mais tarde",
+            })
+        }
+    }
+
     return (
       <>
         <div className="lg:hidden fixed left-0 top-0 bottom-0 w-[60px] border-r bg-background flex flex-col items-center justify-between z-40">
@@ -282,7 +295,7 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
                   Perfil
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate("/logout")} className="text-red-500 focus:text-red-500">
+                <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:text-red-500">
                   <LogOut className="mr-2 h-4 w-4" />
                   Sair
                 </DropdownMenuItem>
