@@ -19,6 +19,7 @@ const FloatingLabelInput = ({
   type = "text",
   required = false,
   isDark = false,
+  onChange,
   ...props
 }: {
   id: string
@@ -26,6 +27,7 @@ const FloatingLabelInput = ({
   type?: string
   required?: boolean
   isDark?: boolean
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   [key: string]: unknown
 }) => {
   const [isFocused, setIsFocused] = useState(false)
@@ -46,7 +48,7 @@ const FloatingLabelInput = ({
           setIsFocused(false)
           setHasValue(e.target.value !== "")
         }}
-        onChange={(e) => setHasValue(e.target.value !== "")}
+        onChange={onChange}
         {...props}
       />
       <label
@@ -68,12 +70,14 @@ const FloatingLabelTextarea = ({
   label,
   required = false,
   isDark = false,
+  onChange,
   ...props
 }: {
   id: string
   label: string
   required?: boolean
   isDark?: boolean
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   [key: string]: unknown
 }) => {
   const [isFocused, setIsFocused] = useState(false)
@@ -93,7 +97,7 @@ const FloatingLabelTextarea = ({
           setIsFocused(false)
           setHasValue(e.target.value !== "")
         }}
-        onChange={(e) => setHasValue(e.target.value !== "")}
+        onChange={onChange}
         {...props}
       />
       <label
@@ -307,7 +311,7 @@ export default function ContactSection() {
                     required
                     isDark={isDark}
                     value={formData.name}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange("name", e.target.value)}
                   />
 
                   <div className="grid gap-2">
@@ -337,7 +341,9 @@ export default function ContactSection() {
                     required
                     isDark={isDark}
                     value={formData.description}
-                    onChange={(e) => handleInputChange("description", e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                      handleInputChange("description", e.target.value)
+                    }
                   />
 
                   <Button
