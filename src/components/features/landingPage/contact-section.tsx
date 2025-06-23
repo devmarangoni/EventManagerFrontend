@@ -263,7 +263,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold mb-1">Endereço</h4>
-                    <p className={isDark ? "text-gray-400" : "text-gray-600"}>Av. Paulista, 1000 - São Paulo, SP</p>
+                    <p className={isDark ? "text-gray-400" : "text-gray-600"}>Rua Domingos Quaglio nº68, Mogi Mirim - São Paulo.</p>
                   </div>
                 </div>
               </div>

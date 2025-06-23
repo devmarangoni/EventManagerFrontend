@@ -148,12 +148,12 @@ export default function EnhancedAboutSection() {
               <h3 className="text-2xl font-bold mb-4">Nossa História</h3>
               <div className="space-y-4">
                 <p className={cn("", isDark ? "text-gray-400" : "text-gray-600")}>
-                  Fundada em 2010, a Maira Gasparini nasceu da paixão por criar experiências memoráveis. Começamos
+                  Fundada em 2020, a Maira Gasparini nasceu da paixão por criar experiências memoráveis. Começamos
                   pequeno, com festas íntimas e aniversários modestos, mas nossa dedicação à excelência e atenção aos
                   detalhes rapidamente nos destacou no mercado.
                 </p>
                 <p className={isDark ? "text-gray-400" : "text-gray-600"}>
-                  Hoje, somos reconhecidos como uma das principais empresas de decoração de festas do país, com uma
+                  Hoje, somos reconhecidos na região de Mogi Mirim, com uma
                   equipe talentosa e apaixonada que transforma cada projeto em uma experiência única e inesquecível.
                 </p>
               </div>

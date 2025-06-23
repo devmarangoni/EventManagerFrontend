@@ -174,7 +174,7 @@ export default function EnhancedLayout({ children }: { children: React.ReactNode
                 </li>
                 <li className="flex items-start space-x-3">
                   <MapPin size={18} className="text-purple-400 mt-1" />
-                  <span className="text-gray-300">Av. Paulista, 1000 - São Paulo, SP</span>
+                  <span className="text-gray-300">Rua Domingos Quaglio nº68, Mogi Mirim - São Paulo.</span>
                 </li>
               </ul>
             </div>
